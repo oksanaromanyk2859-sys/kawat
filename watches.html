@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>طلب ساعة التوكن — KAWAT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Noto+Kufi+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Kufi Arabic', 'Figtree', system-ui, sans-serif;
+      background: #f7f7f7;
+      color: #2b2928;
+      line-height: 1.7;
+      min-height: 100dvh;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    button { cursor: pointer; font: inherit; border: none; background: none; }
+
+    /* Header */
+    .page-header {
+      background: #fff;
+      border-bottom: 1px solid #e8e5e1;
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .header-inner {
+      width: min(1320px, 100% - 30px);
+      margin-inline: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #24604f;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    .back-btn:hover { gap: 12px; }
+    .page-logo img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
+    /* Page Title */
+    .page-title-section {
+      background: #fff;
+      padding: 60px 0 40px;
+      text-align: center;
+    }
+    .page-title-section h1 {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 900;
+      color: #24604f;
+      margin-bottom: 12px;
+    }
+    .page-title-section p {
+      font-size: 1.1rem;
+      color: #433f3e;
+      max-width: 600px;
+      margin-inline: auto;
+    }
+
+    /* Watch Grid */
+    .watches-container {
+      width: min(1320px, 100% - 30px);
+      margin-inline: auto;
+      padding: 40px 0 100px;
+    }
+    .watches-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    /* Watch Card */
+    .watch-card {
+      background: #fff;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 0 21.47px 7.24px rgba(0,0,0,0.07);
+      transition: all 0.3s ease;
+      position: relative;
+      border: 3px solid transparent;
+    }
+    .watch-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 40px 12px rgba(0,0,0,0.12);
+    }
+    .watch-card.selected {
+      border-color: #399624;
+      box-shadow: 0 0 0 4px #e2f7dd, 0 0 40px 12px rgba(0,0,0,0.12);
+    }
+    .watch-card.selected::after {
+      content: '✓';
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      width: 36px;
+      height: 36px;
+      background: #399624;
+      color: #fff;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+      font-weight: 900;
+      z-index: 2;
+    }
+    .watch-card-img {
+      width: 100%;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: #fafafa;
+    }
+    .watch-card-img img {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+      transition: transform 0.4s ease;
+    }
+    .watch-card:hover .watch-card-img img {
+      transform: scale(1.08);
+    }
+    .watch-card-name {
+      text-align: center;
+      padding: 16px 16px 8px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #2b2928;
+    }
+    .watch-card-actions {
+      display: flex;
+      gap: 10px;
+      padding: 8px 16px 20px;
+    }
+    .btn-choose {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      background: #24604f;
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+    .btn-choose:hover {
+      background: #1e4f42;
+    }
+    .watch-card.selected .btn-choose {
+      background: #399624;
+    }
+    .btn-features {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      background: transparent;
+      color: #24604f;
+      border: 1px solid #24604f;
+      transition: all 0.3s ease;
+    }
+    .btn-features:hover {
+      background: #24604f;
+      color: #fff;
+    }
+
+    /* Continue Button (floating) */
+    .continue-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-top: 1px solid #e8e5e1;
+      padding: 16px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 50;
+    }
+    .continue-bar.visible {
+      transform: translateY(0);
+    }
+    .continue-inner {
+      width: min(1320px, 100% - 30px);
+      margin-inline: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .selected-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .selected-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid #399624;
+      object-fit: contain;
+      background: #fff;
+      padding: 4px;
+    }
+    .selected-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #2b2928;
+    }
+    .selected-label {
+      font-size: 0.85rem;
+      color: #399624;
+      font-weight: 500;
+    }
+    .btn-continue {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 40px;
+      background: #24604f;
+      color: #fff;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+    .btn-continue:hover {
+      background: #1e4f42;
+      transform: scale(1.02);
+    }
+    .btn-continue svg {
+      transition: transform 0.3s ease;
+    }
+    .btn-continue:hover svg {
+      transform: translateX(-4px);
+    }
+
+    @media (max-width: 600px) {
+      .watches-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .watch-card-actions {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .continue-inner {
+        flex-direction: column;
+        text-align: center;
+      }
+      .btn-continue {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="page-header">
+    <div class="header-inner">
+      <a href="index.html" class="back-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+        الرئيسية
+      </a>
+      <a href="index.html" class="page-logo">
+        <img src="images/logo.jpg" alt="KAWAT">
+      </a>
+    </div>
+  </header>
+
+  <!-- Page Title -->
+  <section class="page-title-section">
+    <h1>اختر ساعتك المفضلة</h1>
+    <p>اختر ساعة التوكن المناسبة لك من مجموعتنا المتنوعة — هديتنا لجميع عملاء البنك</p>
+  </section>
+
+  <!-- Watches Grid -->
+  <div class="watches-container">
+    <div class="watches-grid" id="watchesGrid">
+    </div>
+  </div>
+
+  <!-- Continue Bar -->
+  <div class="continue-bar" id="continueBar">
+    <div class="continue-inner">
+      <div class="selected-info">
+        <img src="" alt="" class="selected-thumb" id="selectedThumb">
+        <div>
+          <div class="selected-name" id="selectedName"></div>
+          <div class="selected-label">تم الاختيار</div>
+        </div>
+      </div>
+      <button class="btn-continue" id="btnContinue">
+        <span>متابعة الطلب</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const watches = [
+      { id: 5, name: 'ساعة كلاسيكية سوداء', color: 'أسود' },
+      { id: 6, name: 'ساعة رمادية أنيقة', color: 'رمادي' },
+      { id: 7, name: 'ساعة بيضاء فاخرة', color: 'أبيض' },
+      { id: 8, name: 'ساعة وردية مميزة', color: 'وردي' },
+      { id: 9, name: 'ساعة كحلية رياضية', color: 'كحلي' },
+      { id: 10, name: 'ساعة خمرية كلاسيك', color: 'خمري' },
+      { id: 11, name: 'ساعة بيج عصرية', color: 'بيج' },
+      { id: 12, name: 'ساعة ذهبية فاخرة', color: 'ذهبي' },
+      { id: 13, name: 'ساعة بنية طبيعية', color: 'بني' },
+      { id: 14, name: 'ساعة برتقالية جريئة', color: 'برتقالي' },
+      { id: 15, name: 'ساعة بنفسجية أنيقة', color: 'بنفسجي' },
+      { id: 16, name: 'ساعة لافندر ناعمة', color: 'لافندر' },
+      { id: 17, name: 'ساعة كريمية دافئة', color: 'كريمي' },
+      { id: 18, name: 'ساعة سماوية منعشة', color: 'سماوي' },
+      { id: 19, name: 'ساعة زرقاء كلاسيك', color: 'أزرق' },
+      { id: 20, name: 'ساعة صفراء مشرقة', color: 'أصفر' },
+      { id: 21, name: 'ساعة حمراء جريئة', color: 'أحمر' },
+      { id: 22, name: 'ساعة زيتية عسكرية', color: 'زيتي' },
+      { id: 23, name: 'ساعة خضراء طبيعية', color: 'أخضر' },
+    ];
+
+    const grid = document.getElementById('watchesGrid');
+    const continueBar = document.getElementById('continueBar');
+    const selectedThumb = document.getElementById('selectedThumb');
+    const selectedName = document.getElementById('selectedName');
+    let selectedWatch = null;
+
+    watches.forEach(w => {
+      const card = document.createElement('div');
+      card.className = 'watch-card';
+      card.dataset.id = w.id;
+      card.innerHTML = `
+        <div class="watch-card-img">
+          <img src="images/watch-${w.id}.jpg" alt="${w.name}">
+        </div>
+        <div class="watch-card-name">${w.name}</div>
+        <div class="watch-card-actions">
+          <button class="btn-choose" data-id="${w.id}">اختر ساعتك</button>
+          <a href="watch-features.html?id=${w.id}" class="btn-features">مميزات الساعة</a>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    grid.addEventListener('click', e => {
+      const btn = e.target.closest('.btn-choose');
+      if (!btn) return;
+
+      const id = parseInt(btn.dataset.id);
+      const card = btn.closest('.watch-card');
+      const watch = watches.find(w => w.id === id);
+
+      document.querySelectorAll('.watch-card').forEach(c => c.classList.remove('selected'));
+
+      if (selectedWatch === id) {
+        selectedWatch = null;
+        continueBar.classList.remove('visible');
+      } else {
+        selectedWatch = id;
+        card.classList.add('selected');
+        selectedThumb.src = `images/watch-${id}.jpg`;
+        selectedName.textContent = watch.name;
+        continueBar.classList.add('visible');
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+
+    document.getElementById('btnContinue').addEventListener('click', () => {
+      if (selectedWatch) {
+        alert('تم اختيار الساعة بنجاح! سيتم التواصل معك قريباً لإتمام الطلب.');
+      }
+    });
+  </script>
+</body>
+</html>
