@@ -625,78 +625,100 @@
     to { opacity: 1; }
   }
 
-  /* ─── PRODUCT HIGHLIGHTS ─── */
-  .products-section {
-    padding: 4rem 0;
+  /* ─── ZIGZAG PRODUCT BLOCKS (KFH style) ─── */
+  .zigzag-section {
+    background: #fff;
+  }
+
+  .zigzag-section--grey {
     background: #f5f3f0;
   }
 
-  .products-grid {
+  .zigzag-block {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    max-width: 1200px;
+    margin-inline: auto;
   }
 
-  @media (max-width: 900px) {
-    .products-grid { grid-template-columns: 1fr 1fr; }
+  .zigzag-block--reverse {
+    direction: ltr;
   }
 
-  @media (max-width: 500px) {
-    .products-grid { grid-template-columns: 1fr; }
+  .zigzag-block--reverse .zigzag-content {
+    direction: rtl;
   }
 
-  .product-card {
-    background: #fff;
-    border: none;
-    border-radius: 24px;
-    overflow: hidden;
+  @media (max-width: 768px) {
+    .zigzag-block,
+    .zigzag-block--reverse {
+      grid-template-columns: 1fr;
+      direction: rtl;
+    }
+  }
+
+  .zigzag-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    min-height: 350px;
+  }
+
+  @media (max-width: 768px) {
+    .zigzag-img img { min-height: 250px; }
+  }
+
+  .zigzag-content {
+    padding: 3rem 4rem;
+  }
+
+  @media (max-width: 768px) {
+    .zigzag-content { padding: 2rem 1.5rem; }
+  }
+
+  .zigzag-content h2 {
+    font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+    font-weight: 700;
+    color: #2b2928;
+    margin-block-end: 1rem;
+    line-height: 1.4;
+  }
+
+  .zigzag-content p {
+    font-size: 1rem;
+    color: #433f3e;
+    line-height: 1.8;
+    margin-block-end: 1.5rem;
+  }
+
+  .zigzag-btn {
+    display: inline-block;
+    padding: 14px 36px;
+    background: #24604f;
+    color: #fff;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
     transition: all 0.3s ease;
     text-decoration: none;
-    color: #2b2928;
-    box-shadow: 0 0 26.7px 9px rgba(0,0,0,0.07);
   }
 
-  .product-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 0 40px 12px rgba(0,0,0,0.12);
+  .zigzag-btn:hover {
+    background: #1e4f42;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(36,96,79,0.25);
   }
 
-  .product-card-img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+  .zigzag-btn--white {
+    background: #fff;
+    color: #24604f;
   }
 
-  .product-card-body {
-    padding: 1.5rem;
-  }
-
-  .product-card-body h3 {
-    font-size: 1.15rem;
-    font-weight: 700;
-    margin-block-end: 0.5rem;
-    color: #2b2928;
-  }
-
-  .product-card-body p {
-    font-size: 0.9rem;
-    color: #433f3e;
-    line-height: 1.7;
-    margin-block-end: 1rem;
-  }
-
-  .product-link {
-    color: #399624;
-    font-weight: 700;
-    font-size: 0.9rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: gap 0.3s ease;
-  }
-
-  .product-card:hover .product-link {
-    gap: 10px;
+  .zigzag-btn--white:hover {
+    background: #e2f7dd;
+    color: #24604f;
   }
 
   /* ─── APP SECTION ─── */
@@ -802,7 +824,7 @@
   /* ─── TOOLS & DOCUMENTS ─── */
   .tools-section {
     padding: 5rem 0;
-    background: #fff;
+    background: #f5f3f0;
   }
 
   .tools-tabs {
@@ -865,6 +887,21 @@
     width: 32px;
     height: 32px;
     flex-shrink: 0;
+  }
+
+  .tool-card-arrow {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-inline-start: auto;
+    opacity: 0;
+    transform: translateX(5px);
+    transition: all 0.3s ease;
+  }
+
+  .tool-card:hover .tool-card-arrow {
+    opacity: 1;
+    transform: translateX(0);
   }
 
   /* ─── PROFIT DISTRIBUTION ─── */
@@ -1070,101 +1107,127 @@
 
   /* ─── TREASURY ─── */
   .treasury-section {
-    padding: 4rem 0;
-    background: #fff;
-  }
-
-  .treasury-card {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0;
-    align-items: center;
-    background: #fff;
-    border: none;
-    border-radius: 24px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    color: #2b2928;
-    box-shadow: 0 0 26.7px 9px rgba(0,0,0,0.07);
-  }
-
-  .treasury-card:hover { transform: translateY(-10px); box-shadow: 0 0 40px 12px rgba(0,0,0,0.12); }
-
-  .treasury-img {
-    width: 300px;
-    height: 200px;
-    object-fit: cover;
-  }
-
-  @media (max-width: 600px) {
-    .treasury-card { grid-template-columns: 1fr; }
-    .treasury-img { width: 100%; height: 180px; }
-  }
-
-  .treasury-body {
-    padding: 2rem;
-  }
-
-  .treasury-body h3 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-block-end: 1rem;
-    color: #2b2928;
-  }
-
-  /* ─── BRANCH LOCATOR ─── */
-  .branch-section {
-    padding: 5rem 0;
-    background: #f5f3f0;
-  }
-
-  .branch-card {
-    text-align: center;
-    max-width: 600px;
-    margin-inline: auto;
-    padding: 3.5rem 2.5rem;
-    background: #fff;
-    border-radius: 24px;
-    border: none;
-    box-shadow: 0 0 26.7px 9px rgba(0,0,0,0.07);
-  }
-
-  .branch-icon {
-    width: 72px;
-    height: 72px;
-    margin-inline: auto;
-    margin-block-end: 1.5rem;
-  }
-
-  .branch-card h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-block-end: 0.75rem;
-    color: #2b2928;
-  }
-
-  .branch-card p {
-    color: #433f3e;
-    font-size: 0.95rem;
-    line-height: 1.8;
-    margin-block-end: 2rem;
-  }
-
-  .branch-btn {
-    display: inline-block;
-    padding: 14px 36px;
+    padding: 0;
     background: #24604f;
     color: #fff;
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
   }
 
-  .branch-btn:hover {
-    background: #1e4f42;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(36,96,79,0.25);
+  .treasury-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    max-width: 1200px;
+    margin-inline: auto;
+  }
+
+  @media (max-width: 768px) {
+    .treasury-grid { grid-template-columns: 1fr; }
+  }
+
+  .treasury-content {
+    padding: 3rem 4rem;
+  }
+
+  @media (max-width: 768px) {
+    .treasury-content { padding: 2rem 1.5rem; }
+  }
+
+  .treasury-content h2 {
+    font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+    font-weight: 700;
+    color: #fff;
+    margin-block-end: 1.5rem;
+    line-height: 1.4;
+  }
+
+  .treasury-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    min-height: 300px;
+  }
+
+  @media (max-width: 768px) {
+    .treasury-image img { min-height: 220px; }
+  }
+
+  /* ─── REACH US (KFH footer-top style) ─── */
+  .reach-us-section {
+    padding: 4rem 0;
+    background: #24604f;
+    color: #fff;
+  }
+
+  .reach-us-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .reach-us-grid { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  .reach-card {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .reach-card-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+  }
+
+  .reach-card-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+
+  .reach-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    display: block;
+    margin-block-end: 0.5rem;
+    transition: opacity 0.3s ease;
+  }
+
+  .reach-card-title:hover { opacity: 0.8; }
+
+  .reach-card-body p {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    opacity: 0.8;
+  }
+
+  .reach-phone {
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    direction: ltr;
+    display: block;
+    margin-block-end: 0.75rem;
+    opacity: 1 !important;
+  }
+
+  .reach-us-section .intl-phones {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+
+  .reach-us-section .intl-phones strong {
+    color: #fff;
+    direction: ltr;
+    display: inline-block;
   }
 
   /* ─── CTA BUTTON ─── */
@@ -1231,36 +1294,29 @@
   .service-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 16px;
     width: calc(50% - 10px);
     background: #fff;
-    border-radius: var(--radius-md);
-    padding: 24px 24px 24px 32px;
-    box-shadow: var(--shadow-md);
+    border-radius: 24px;
+    padding: 20px 24px;
+    box-shadow: 0 0 26.7px 9px rgba(0,0,0,0.07);
     transition: all 0.3s ease;
     text-decoration: none;
-    color: var(--text);
+    color: #2b2928;
   }
 
   @media (max-width: 700px) {
-    .service-row { width: 100%; padding: 14px 20px; border-radius: 20px; }
+    .service-row { width: 100%; padding: 16px 20px; }
   }
 
   .service-row:hover {
     transform: translateY(-10px);
-  }
-
-  .service-row-text {
-    font-size: clamp(1rem, 2vw, 1.5rem);
-    font-weight: 500;
-    flex: 1;
-    text-align: center;
-    color: #433f3e;
+    box-shadow: 0 0 40px 12px rgba(0,0,0,0.12);
   }
 
   .service-row-icon {
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1268,7 +1324,7 @@
   }
 
   @media (max-width: 700px) {
-    .service-row-icon { width: 40px; height: 40px; }
+    .service-row-icon { width: 36px; height: 36px; }
   }
 
   .service-row-icon svg,
@@ -1276,6 +1332,32 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
+  }
+
+  .service-row-text {
+    font-size: clamp(0.95rem, 2vw, 1.15rem);
+    font-weight: 500;
+    flex: 1;
+    color: #2b2928;
+  }
+
+  .service-row-arrow {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    opacity: 0;
+    transform: translateX(5px);
+    transition: all 0.3s ease;
+  }
+
+  .service-row:hover .service-row-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .service-row-arrow img {
+    width: 100%;
+    height: 100%;
   }
 
   @keyframes fadeInUp {
@@ -1427,122 +1509,7 @@
     opacity: 0.85;
   }
 
-  /* ─── CONTACT ─── */
-  .contact-section {
-    padding: 5rem 0;
-    background: #fff;
-  }
-
-  .contact-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-
-  @media (max-width: 900px) {
-    .contact-grid { grid-template-columns: 1fr; }
-  }
-
-  .contact-card {
-    background: #fff;
-    border: none;
-    border-radius: 24px;
-    padding: 2rem;
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 26.7px 9px rgba(0,0,0,0.07);
-  }
-
-  .contact-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 0 40px 12px rgba(0,0,0,0.12);
-  }
-
-  .contact-card--phone {
-    background: #24604f;
-    border: none;
-    color: #fff;
-    box-shadow: 0 8px 30px rgba(36,96,79,0.25);
-  }
-
-  .contact-card--phone:hover {
-    box-shadow: 0 12px 40px rgba(36,96,79,0.35);
-  }
-
-  .contact-card--phone h3 { color: rgba(255,255,255,0.85); font-size: 0.95rem; }
-
-  .contact-phone {
-    font-size: 2rem;
-    font-weight: 900;
-    letter-spacing: 2px;
-    direction: ltr;
-    display: block;
-    margin-block-start: 4px;
-  }
-
-  .contact-card--phone .contact-phone { color: #fff; }
-
-  .contact-card-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.15);
-    display: grid;
-    place-items: center;
-    flex-shrink: 0;
-  }
-
-  .contact-card-icon--outline {
-    background: #e2f7dd;
-  }
-
-  .contact-card-body h3 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    margin-block-end: 0.5rem;
-    color: #2b2928;
-  }
-
-  .contact-card-body p {
-    color: #433f3e;
-    font-size: 0.9rem;
-    line-height: 1.8;
-    margin-block-end: 1rem;
-  }
-
-  .intl-phones {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-size: 0.9rem;
-    color: #433f3e;
-  }
-
-  .intl-phones strong {
-    color: #2b2928;
-    direction: ltr;
-    display: inline-block;
-  }
-
-  .contact-write-btn {
-    display: inline-block;
-    padding: 12px 32px;
-    background: #24604f;
-    color: #fff;
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-  }
-
-  .contact-write-btn:hover {
-    background: #1e4f42;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(36,96,79,0.25);
-  }
+  /* (old contact section removed — replaced by reach-us-section) */
 
   /* ─── FOOTER ─── */
   .site-footer {
