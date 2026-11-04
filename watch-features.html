@@ -9,384 +9,182 @@
   <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Noto+Kufi+Arabic:wght@100..900&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Noto Kufi Arabic', 'Figtree', system-ui, sans-serif;
-      background: #fff;
-      color: #2b2928;
-      line-height: 1.7;
-      min-height: 100dvh;
-    }
-    a { text-decoration: none; color: inherit; }
-    img { display: block; max-width: 100%; }
-    button { cursor: pointer; font: inherit; border: none; background: none; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Noto Kufi Arabic','Figtree',system-ui,sans-serif;background:#fff;color:#2b2928;line-height:1.7;min-height:100dvh;overflow-x:hidden}
+    a{text-decoration:none;color:inherit}
+    img{display:block;max-width:100%}
+    button{cursor:pointer;font:inherit;border:none;background:none}
 
-    /* Header */
-    .page-header {
-      background: #fff;
-      border-bottom: 1px solid #e8e5e1;
-      padding: 16px 0;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-    .header-inner {
-      width: min(1320px, 100% - 30px);
-      margin-inline: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .back-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #24604f;
-      font-weight: 700;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-    .back-btn:hover { gap: 12px; }
-    .page-logo img {
-      width: 48px;
-      height: 48px;
-      object-fit: contain;
-      border-radius: 4px;
-    }
+    .header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #e8e5e1}
+    .header-inner{width:min(1320px,100% - 32px);margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between}
+    .back-link{display:inline-flex;align-items:center;gap:8px;color:#24604f;font-weight:700;font-size:.95rem;transition:gap .2s}
+    .back-link:hover{gap:12px}
+    .header-logo img{width:44px;height:44px;border-radius:6px;object-fit:contain}
 
-    /* Hero Section */
-    .features-hero {
-      background: linear-gradient(135deg, #e2f7dd 0%, #f0faf0 100%);
-      padding: 80px 0;
-    }
-    .features-hero-inner {
-      width: min(1320px, 100% - 30px);
-      margin-inline: auto;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 40px;
-    }
-    .hero-watch {
-      flex: 0 0 40%;
-      display: grid;
-      place-items: center;
-    }
-    .hero-watch-circle {
-      width: 350px;
-      height: 350px;
-      border-radius: 50%;
-      border: 5px solid #399624;
-      background: #fff;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
-      box-shadow: 0 0 0 10px #e2f7dd, 0 20px 60px rgba(0,132,61,0.2);
-    }
-    .hero-watch-circle img {
-      width: 85%;
-      height: 85%;
-      object-fit: contain;
-    }
-    .hero-info {
-      flex: 1;
-      min-width: 280px;
-    }
-    .hero-info h1 {
-      font-size: clamp(1.6rem, 4vw, 2.5rem);
-      font-weight: 900;
-      color: #24604f;
-      margin-bottom: 8px;
-    }
-    .hero-color-badge {
-      display: inline-block;
-      background: #24604f;
-      color: #fff;
-      padding: 6px 20px;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      margin-bottom: 20px;
-    }
-    .hero-desc {
-      font-size: 1.1rem;
-      color: #433f3e;
-      line-height: 1.9;
-      margin-bottom: 24px;
-    }
-    .btn-order {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 40px;
-      background: #24604f;
-      color: #fff;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      transition: all 0.3s ease;
-    }
-    .btn-order:hover {
-      background: #1e4f42;
-      transform: translateY(-2px);
-    }
+    .hero{background:#2b2928;color:#fff;padding:64px 0 56px;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;top:-40%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(57,150,36,.15) 0%,transparent 70%);pointer-events:none}
+    .hero-inner{width:min(1320px,100% - 32px);margin:0 auto;display:flex;align-items:center;gap:48px}
+    .hero-media{flex:0 0 320px;display:flex;justify-content:center;align-items:center;position:relative}
+    .hero-ring{width:280px;height:280px;border-radius:50%;border:3px solid rgba(57,150,36,.5);display:grid;place-items:center;position:relative;background:rgba(255,255,255,.04)}
+    .hero-ring::after{content:'';position:absolute;inset:-12px;border-radius:50%;border:1px solid rgba(57,150,36,.15)}
+    .hero-ring img{width:80%;height:80%;object-fit:contain;filter:drop-shadow(0 10px 30px rgba(0,0,0,.4))}
+    .hero-text{flex:1;min-width:0}
+    .hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(57,150,36,.15);color:#7ddf64;padding:6px 16px;border-radius:50px;font-size:.82rem;font-weight:600;margin-bottom:16px}
+    .hero-badge::before{content:'';width:8px;height:8px;background:#399624;border-radius:50%}
+    .hero-text h1{font-size:clamp(1.5rem,4vw,2.4rem);font-weight:900;margin-bottom:12px;line-height:1.4}
+    .hero-desc{font-size:clamp(.9rem,2.5vw,1.05rem);color:rgba(255,255,255,.7);line-height:1.9;margin-bottom:24px;max-width:480px}
+    .hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+    .btn-primary{display:inline-flex;align-items:center;gap:8px;padding:12px 32px;background:#399624;color:#fff;border-radius:50px;font-weight:700;font-size:.95rem;transition:all .3s}
+    .btn-primary:hover{background:#2d7a1c;transform:translateY(-2px)}
+    .btn-outline{display:inline-flex;align-items:center;gap:8px;padding:12px 32px;background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:50px;font-weight:700;font-size:.95rem;transition:all .3s}
+    .btn-outline:hover{border-color:#fff;background:rgba(255,255,255,.08)}
 
-    @media (max-width: 768px) {
-      .hero-watch { flex: 0 0 100%; }
-      .hero-watch-circle { width: 260px; height: 260px; }
-      .features-hero { padding: 40px 0; }
-    }
+    .features{padding:72px 0;background:#fff}
+    .container{width:min(1320px,100% - 32px);margin:0 auto}
+    .section-head{display:flex;align-items:center;gap:12px;margin-bottom:40px}
+    .section-bar{width:4px;height:32px;background:#399624;border-radius:9999px;flex-shrink:0}
+    .section-head h2{font-size:clamp(1.3rem,3vw,1.8rem);font-weight:900;color:#2b2928}
 
-    /* Features Section */
-    .features-section {
-      padding: 80px 0;
-      background: #fff;
-    }
-    .features-container {
-      width: min(1320px, 100% - 30px);
-      margin-inline: auto;
-    }
-    .features-title {
-      font-size: clamp(1.4rem, 3.5vw, 2rem);
-      font-weight: 900;
-      color: #2b2928;
-      margin-bottom: 48px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .features-title-bar {
-      width: 5px;
-      height: 36px;
-      background: #399624;
-      border-radius: 9999px;
-      flex-shrink: 0;
-    }
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 24px;
-    }
-    .feature-card {
-      background: #fff;
-      border-radius: 20px;
-      padding: 32px 28px;
-      box-shadow: 0 0 21.47px 7.24px rgba(0,0,0,0.07);
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-    }
-    .feature-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 0 40px 12px rgba(0,0,0,0.1);
-    }
-    .feature-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
-      background: #e2f7dd;
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-    }
-    .feature-icon svg { color: #399624; }
-    .feature-text h3 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #2b2928;
-      margin-bottom: 6px;
-    }
-    .feature-text p {
-      font-size: 0.9rem;
-      color: #433f3e;
-      line-height: 1.8;
-    }
+    .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .feat{background:#fff;border-radius:16px;padding:28px 24px;border:1px solid #e8e5e1;transition:all .3s;display:flex;gap:16px;align-items:flex-start}
+    .feat:hover{border-color:#b8e0b0;box-shadow:0 8px 24px rgba(0,0,0,.06);transform:translateY(-3px)}
+    .feat-ico{width:48px;height:48px;border-radius:14px;background:#e2f7dd;display:grid;place-items:center;flex-shrink:0}
+    .feat-ico svg{color:#399624;width:24px;height:24px}
+    .feat h3{font-size:.95rem;font-weight:700;color:#2b2928;margin-bottom:6px}
+    .feat p{font-size:.85rem;color:#433f3e;line-height:1.8}
 
-    /* Specs Section */
-    .specs-section {
-      padding: 80px 0;
-      background: #f7f7f7;
-    }
-    .specs-container {
-      width: min(1320px, 100% - 30px);
-      margin-inline: auto;
-    }
-    .specs-title {
-      font-size: clamp(1.4rem, 3.5vw, 2rem);
-      font-weight: 900;
-      color: #2b2928;
-      margin-bottom: 40px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .specs-table {
-      width: 100%;
-      max-width: 700px;
-      border-collapse: collapse;
-      background: #fff;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 0 21.47px 7.24px rgba(0,0,0,0.07);
-    }
-    .specs-table tr { border-bottom: 1px solid #e8e5e1; }
-    .specs-table tr:last-child { border-bottom: none; }
-    .specs-table td {
-      padding: 18px 24px;
-      font-size: 1rem;
-    }
-    .specs-table td:first-child {
-      font-weight: 700;
-      color: #24604f;
-      width: 40%;
-    }
-    .specs-table td:last-child {
-      color: #433f3e;
-    }
+    .specs{padding:72px 0;background:#f7f7f7}
+    .specs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .spec{background:#fff;border-radius:16px;padding:24px 20px;text-align:center;border:1px solid #e8e5e1;transition:all .3s}
+    .spec:hover{border-color:#b8e0b0;box-shadow:0 6px 20px rgba(0,0,0,.06)}
+    .spec-val{font-size:1.6rem;font-weight:900;color:#24604f;margin-bottom:4px}
+    .spec-label{font-size:.82rem;color:#433f3e;font-weight:600}
 
-    /* Bottom CTA */
-    .bottom-cta {
-      padding: 80px 0;
-      background: #e2f7dd;
-      text-align: center;
+    .cta{padding:72px 0;background:linear-gradient(160deg,#e2f7dd 0%,#fff 60%);text-align:center}
+    .cta h2{font-size:clamp(1.3rem,3vw,1.8rem);font-weight:900;color:#24604f;margin-bottom:12px}
+    .cta p{font-size:1rem;color:#433f3e;margin-bottom:28px}
+    .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn-dark{display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:#24604f;color:#fff;border-radius:50px;font-weight:700;font-size:1rem;transition:all .3s}
+    .btn-dark:hover{background:#1e4f42;transform:translateY(-2px)}
+    .btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:transparent;color:#24604f;border:1.5px solid #24604f;border-radius:50px;font-weight:700;font-size:1rem;transition:all .3s}
+    .btn-ghost:hover{background:#24604f;color:#fff}
+
+    @media(max-width:1024px){
+      .feat-grid{grid-template-columns:repeat(2,1fr)}
+      .specs-grid{grid-template-columns:repeat(2,1fr)}
     }
-    .bottom-cta h2 {
-      font-size: clamp(1.4rem, 3.5vw, 2rem);
-      font-weight: 900;
-      color: #24604f;
-      margin-bottom: 16px;
+    @media(max-width:768px){
+      .hero{padding:40px 0 36px}
+      .hero-inner{flex-direction:column;text-align:center;gap:28px}
+      .hero-media{flex:none}
+      .hero-ring{width:220px;height:220px}
+      .hero-desc{margin-inline:auto}
+      .hero-btns{justify-content:center}
+      .features,.specs,.cta{padding:48px 0}
+      .feat-grid{grid-template-columns:1fr}
+      .specs-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+      .spec{padding:18px 14px}
+      .spec-val{font-size:1.3rem}
     }
-    .bottom-cta p {
-      font-size: 1.05rem;
-      color: #433f3e;
-      margin-bottom: 28px;
-    }
-    .cta-buttons {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .btn-back-watches {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 36px;
-      background: transparent;
-      color: #24604f;
-      border: 1px solid #24604f;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-    .btn-back-watches:hover {
-      background: #24604f;
-      color: #fff;
+    @media(max-width:400px){
+      .hero-ring{width:180px;height:180px}
+      .hero-btns{flex-direction:column;width:100%;padding:0 16px}
+      .btn-primary,.btn-outline{width:100%;justify-content:center}
     }
   </style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="page-header">
+  <header class="header">
     <div class="header-inner">
-      <a href="watches.html" class="back-btn">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/>
-          <polyline points="12 5 19 12 12 19"/>
-        </svg>
+      <a href="watches.html" class="back-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         العودة للساعات
       </a>
-      <a href="index.html" class="page-logo">
-        <img src="images/logo.jpg" alt="KAWAT">
-      </a>
+      <a href="index.html" class="header-logo"><img src="images/logo.jpg" alt="KAWAT"></a>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="features-hero">
-    <div class="features-hero-inner">
-      <div class="hero-watch">
-        <div class="hero-watch-circle">
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-media">
+        <div class="hero-ring">
           <img src="" alt="" id="heroImg">
         </div>
       </div>
-      <div class="hero-info">
+      <div class="hero-text">
+        <div class="hero-badge" id="heroBadge">ساعة التوكن</div>
         <h1 id="heroName"></h1>
-        <div class="hero-color-badge" id="heroColor"></div>
-        <p class="hero-desc">ساعة التوكن الذكية من بيت التمويل الكويتي — تجمع بين الأناقة والأمان المصرفي المتقدم. هدية مجانية لجميع عملاء البنك.</p>
-        <a href="watches.html" class="btn-order" id="btnOrder">
-          <span>اختر هذه الساعة</span>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12"/>
-            <polyline points="12 19 5 12 12 5"/>
-          </svg>
-        </a>
+        <p class="hero-desc">ساعة التوكن الذكية — تجمع بين الأناقة والأمان المصرفي المتقدم. هدية مجانية لجميع عملاء البنك.</p>
+        <div class="hero-btns">
+          <a href="watches.html" class="btn-primary">
+            اختر هذه الساعة
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          </a>
+          <a href="watches.html" class="btn-outline">تصفح ساعات أخرى</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Features -->
-  <section class="features-section">
-    <div class="features-container">
-      <h2 class="features-title">
-        <span class="features-title-bar"></span>
-        مميزات ساعة التوكن
-      </h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+  <section class="features">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-bar"></span>
+        <h2>مميزات ساعة التوكن</h2>
+      </div>
+      <div class="feat-grid">
+        <div class="feat">
+          <div class="feat-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           </div>
-          <div class="feature-text">
+          <div>
             <h3>حماية شاملة للحساب</h3>
             <p>تأمين حسابك البنكي بتقنية المصادقة الثنائية المتقدمة عبر الساعة مباشرة</p>
           </div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <div class="feat">
+          <div class="feat-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
-          <div class="feature-text">
+          <div>
             <h3>ذكاء اصطناعي متقدم</h3>
-            <p>تعتمد على تقنية الذكاء الاصطناعي للكشف عن المعاملات المشبوهة وحماية حسابك تلقائياً</p>
+            <p>تقنية AI للكشف عن المعاملات المشبوهة وحماية حسابك تلقائياً</p>
           </div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div class="feat">
+          <div class="feat-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </div>
-          <div class="feature-text">
+          <div>
             <h3>مصادقة فورية</h3>
-            <p>تأكيد العمليات المصرفية بلمسة واحدة — بدون الحاجة لرموز SMS أو تطبيقات إضافية</p>
+            <p>تأكيد العمليات المصرفية بلمسة واحدة — بدون رموز SMS أو تطبيقات إضافية</p>
           </div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        <div class="feat">
+          <div class="feat-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
           </div>
-          <div class="feature-text">
+          <div>
             <h3>حماية من الاحتيال</h3>
-            <p>نظام متكامل لمنع الاحتيال والمعاملات غير المصرح بها على حسابك البنكي</p>
+            <p>نظام متكامل لمنع الاحتيال والمعاملات غير المصرح بها على حسابك</p>
           </div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <div class="feat">
+          <div class="feat-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
           </div>
-          <div class="feature-text">
+          <div>
             <h3>إشعارات لحظية</h3>
-            <p>تنبيهات فورية على معصمك لكل عملية على حسابك — تحويلات، مشتريات، وعمليات الدخول</p>
+            <p>تنبيهات فورية على معصمك لكل عملية — تحويلات ومشتريات وعمليات دخول</p>
           </div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        <div class="feat">
+          <div class="feat-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
           </div>
-          <div class="feature-text">
+          <div>
             <h3>دفع بدون تلامس</h3>
             <p>ادفع مشترياتك بتمرير ساعتك على جهاز الدفع — سريع وآمن بتقنية NFC</p>
           </div>
@@ -395,68 +193,63 @@
     </div>
   </section>
 
-  <!-- Specs -->
-  <section class="specs-section">
-    <div class="specs-container">
-      <h2 class="specs-title">
-        <span class="features-title-bar"></span>
-        المواصفات التقنية
-      </h2>
-      <table class="specs-table">
-        <tr><td>الشاشة</td><td>AMOLED 1.4 بوصة بدقة عالية</td></tr>
-        <tr><td>المقاومة</td><td>مقاومة للماء حتى 50 متر (5ATM)</td></tr>
-        <tr><td>البطارية</td><td>تدوم حتى 7 أيام بشحنة واحدة</td></tr>
-        <tr><td>الاتصال</td><td>Bluetooth 5.2 + NFC</td></tr>
-        <tr><td>التوافق</td><td>iOS 14+ / Android 10+</td></tr>
-        <tr><td>المستشعرات</td><td>نبض القلب، تتبع النوم، عداد الخطوات</td></tr>
-        <tr><td>الأمان</td><td>تشفير AES-256 + مصادقة بيومترية</td></tr>
-        <tr><td>المادة</td><td>إطار ألمنيوم مع سوار سيليكون مريح</td></tr>
-      </table>
+  <section class="specs">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-bar"></span>
+        <h2>المواصفات التقنية</h2>
+      </div>
+      <div class="specs-grid">
+        <div class="spec"><div class="spec-val">AMOLED</div><div class="spec-label">شاشة 1.4 بوصة عالية الدقة</div></div>
+        <div class="spec"><div class="spec-val">5ATM</div><div class="spec-label">مقاومة للماء حتى 50 متر</div></div>
+        <div class="spec"><div class="spec-val">7 أيام</div><div class="spec-label">عمر البطارية بشحنة واحدة</div></div>
+        <div class="spec"><div class="spec-val">BT 5.2</div><div class="spec-label">بلوتوث + NFC للدفع</div></div>
+        <div class="spec"><div class="spec-val">AES-256</div><div class="spec-label">تشفير متقدم + مصادقة بيومترية</div></div>
+        <div class="spec"><div class="spec-val">iOS/Android</div><div class="spec-label">متوافق مع جميع الأجهزة</div></div>
+        <div class="spec"><div class="spec-val">ألمنيوم</div><div class="spec-label">إطار خفيف مع سوار سيليكون</div></div>
+        <div class="spec"><div class="spec-val">3 مستشعرات</div><div class="spec-label">نبض القلب، نوم، خطوات</div></div>
+      </div>
     </div>
   </section>
 
-  <!-- Bottom CTA -->
-  <section class="bottom-cta">
+  <section class="cta">
     <h2>أعجبتك هذه الساعة؟</h2>
-    <p>اطلبها الآن مجاناً — هدية بيت التمويل الكويتي لعملائه</p>
-    <div class="cta-buttons">
-      <a href="watches.html" class="btn-order">اختر هذه الساعة</a>
-      <a href="watches.html" class="btn-back-watches">تصفح ساعات أخرى</a>
+    <p>اطلبها الآن مجاناً — هديتنا لجميع عملاء البنك</p>
+    <div class="cta-btns">
+      <a href="watches.html" class="btn-dark">اختر هذه الساعة</a>
+      <a href="watches.html" class="btn-ghost">تصفح ساعات أخرى</a>
     </div>
   </section>
 
   <script>
-    const watches = {
-      5:  { name: 'ساعة كلاسيكية سوداء', color: 'أسود' },
-      6:  { name: 'ساعة رمادية أنيقة', color: 'رمادي' },
-      7:  { name: 'ساعة بيضاء فاخرة', color: 'أبيض' },
-      8:  { name: 'ساعة وردية مميزة', color: 'وردي' },
-      9:  { name: 'ساعة كحلية رياضية', color: 'كحلي' },
-      10: { name: 'ساعة خمرية كلاسيك', color: 'خمري' },
-      11: { name: 'ساعة بيج عصرية', color: 'بيج' },
-      12: { name: 'ساعة ذهبية فاخرة', color: 'ذهبي' },
-      13: { name: 'ساعة بنية طبيعية', color: 'بني' },
-      14: { name: 'ساعة برتقالية جريئة', color: 'برتقالي' },
-      15: { name: 'ساعة بنفسجية أنيقة', color: 'بنفسجي' },
-      16: { name: 'ساعة لافندر ناعمة', color: 'لافندر' },
-      17: { name: 'ساعة كريمية دافئة', color: 'كريمي' },
-      18: { name: 'ساعة سماوية منعشة', color: 'سماوي' },
-      19: { name: 'ساعة زرقاء كلاسيك', color: 'أزرق' },
-      20: { name: 'ساعة صفراء مشرقة', color: 'أصفر' },
-      21: { name: 'ساعة حمراء جريئة', color: 'أحمر' },
-      22: { name: 'ساعة زيتية عسكرية', color: 'زيتي' },
-      23: { name: 'ساعة خضراء طبيعية', color: 'أخضر' },
+    const W={
+      5:{name:'سوداء كلاسيكية',color:'أسود'},
+      6:{name:'رمادية أنيقة',color:'رمادي'},
+      7:{name:'بيضاء فاخرة',color:'أبيض'},
+      8:{name:'وردية مميزة',color:'وردي'},
+      9:{name:'كحلية رياضية',color:'كحلي'},
+      10:{name:'خمرية كلاسيك',color:'خمري'},
+      11:{name:'بيج عصرية',color:'بيج'},
+      12:{name:'ذهبية فاخرة',color:'ذهبي'},
+      13:{name:'بنية طبيعية',color:'بني'},
+      14:{name:'برتقالية جريئة',color:'برتقالي'},
+      15:{name:'بنفسجية أنيقة',color:'بنفسجي'},
+      16:{name:'لافندر ناعمة',color:'لافندر'},
+      17:{name:'كريمية دافئة',color:'كريمي'},
+      18:{name:'سماوية منعشة',color:'سماوي'},
+      19:{name:'زرقاء كلاسيك',color:'أزرق'},
+      20:{name:'صفراء مشرقة',color:'أصفر'},
+      21:{name:'حمراء جريئة',color:'أحمر'},
+      22:{name:'زيتية عسكرية',color:'زيتي'},
+      23:{name:'خضراء طبيعية',color:'أخضر'}
     };
-
-    const params = new URLSearchParams(window.location.search);
-    const id = parseInt(params.get('id')) || 5;
-    const watch = watches[id] || watches[5];
-
-    document.getElementById('heroImg').src = `images/watch-${id}.jpg`;
-    document.getElementById('heroImg').alt = watch.name;
-    document.getElementById('heroName').textContent = watch.name;
-    document.getElementById('heroColor').textContent = `اللون: ${watch.color}`;
-    document.title = `${watch.name} — مميزات الساعة | KAWAT`;
+    const id=parseInt(new URLSearchParams(location.search).get('id'))||5;
+    const w=W[id]||W[5];
+    document.getElementById('heroImg').src=`images/watch-${id}.jpg`;
+    document.getElementById('heroImg').alt=w.name;
+    document.getElementById('heroName').textContent=w.name;
+    document.getElementById('heroBadge').textContent=`اللون: ${w.color}`;
+    document.title=`${w.name} — مميزات الساعة | KAWAT`;
   </script>
 </body>
 </html>
