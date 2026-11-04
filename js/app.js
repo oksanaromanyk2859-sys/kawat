@@ -103,37 +103,30 @@ $$('.service-card, .stat-item, .about-text, .about-card, .info-item').forEach(el
 // Observe counter elements
 $$('[data-target]').forEach(el => revealObserver.observe(el));
 
-// ─── Hero stats card counter ───
-const heroNum = $('.amount-num');
-if (heroNum) {
-  const heroObserver = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting) {
-        animateCounter(heroNum);
-        heroObserver.disconnect();
-      }
-    },
-    { threshold: 0.5 }
-  );
-  heroObserver.observe(heroNum);
+// ─── Watch Carousel ───
+const bannerWatch = $('#bannerWatch');
+const carouselMover = $('#carouselMover');
+
+if (carouselMover && bannerWatch) {
+  // Click to show in banner
+  carouselMover.addEventListener('click', (e) => {
+    const item = e.target.closest('.carousel-item');
+    if (!item) return;
+    const src = item.dataset.src;
+    if (!src) return;
+
+    $$('.carousel-item').forEach(el => el.classList.remove('active'));
+    $$(`[data-src="${src}"]`).forEach(el => el.classList.add('active'));
+
+    bannerWatch.classList.add('switching');
+    setTimeout(() => {
+      bannerWatch.src = src;
+      bannerWatch.classList.remove('switching');
+    }, 300);
+
+    $('#hero').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 }
-
-// ─── Contact form ───
-$('#contactForm')?.addEventListener('submit', (e) => {
-  e.preventDefault();
-
-  const btn = e.target.querySelector('.submit-btn');
-  const originalHTML = btn.innerHTML;
-
-  btn.innerHTML = '<span>تم الإرسال ✓</span>';
-  btn.style.background = 'var(--green-light)';
-
-  setTimeout(() => {
-    btn.innerHTML = originalHTML;
-    btn.style.background = '';
-    e.target.reset();
-  }, 2500);
-});
 
 // ─── Smooth scroll with offset ───
 $$('a[href^="#"]').forEach(anchor => {
