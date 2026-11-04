@@ -455,10 +455,6 @@
     transform: scale(0.8);
   }
 
-  @media (max-width: 480px) {
-    .banner-circle { width: 240px; height: 240px; }
-    .banner-icon { width: 48px; height: 48px; }
-  }
 
   /* Banner texts below the watch */
   .banner-texts {
@@ -649,18 +645,6 @@
     direction: rtl;
   }
 
-  @media (max-width: 768px) {
-    .zigzag-img, .zigzag-content {
-      width: 100%;
-    }
-    .zigzag-content {
-      padding: 30px 24px 60px;
-    }
-    .zigzag-block,
-    .zigzag-block--reverse {
-      direction: rtl;
-    }
-  }
 
   .zigzag-img {
     width: 44%;
@@ -675,9 +659,6 @@
     min-height: 350px;
   }
 
-  @media (max-width: 768px) {
-    .zigzag-img img { min-height: 250px; }
-  }
 
   .zigzag-content {
     width: 56%;
@@ -687,9 +668,6 @@
     align-items: center;
   }
 
-  @media (max-width: 768px) {
-    .zigzag-content { padding: 2rem 1.5rem; }
-  }
 
   .zigzag-content h2 {
     font-size: clamp(1.5rem, 3.5vw, 3rem);
@@ -764,10 +742,6 @@
     padding: 20px 0 20px 30px;
   }
 
-  @media (max-width: 768px) {
-    .app-phones, .app-info { width: 100%; }
-    .app-info { padding: 20px 0; text-align: center; }
-  }
 
   .app-phones {
     display: flex;
@@ -829,9 +803,6 @@
     flex-wrap: wrap;
   }
 
-  @media (max-width: 768px) {
-    .app-stores { justify-content: center; }
-  }
 
   .store-badge {
     height: 44px;
@@ -844,9 +815,6 @@
     padding: 8px;
   }
 
-  @media (max-width: 768px) {
-    .app-qr { margin-inline: auto; }
-  }
 
   /* ─── TOOLS & DOCUMENTS ─── */
   .tools-section {
@@ -1030,9 +998,6 @@
     align-items: center;
   }
 
-  @media (max-width: 768px) {
-    .treasury-grid { grid-template-columns: 1fr; }
-  }
 
   .treasury-content {
     width: 62.1%;
@@ -1047,10 +1012,6 @@
     flex-shrink: 0;
   }
 
-  @media (max-width: 768px) {
-    .treasury-content, .treasury-image { width: 100%; }
-    .treasury-content { padding: 2rem 1.5rem; }
-  }
 
   .treasury-content h2 {
     font-size: clamp(1.5rem, 3.5vw, 3rem);
@@ -1068,9 +1029,6 @@
     border-radius: 25px;
   }
 
-  @media (max-width: 768px) {
-    .treasury-image img { min-height: 220px; }
-  }
 
   /* ─── REACH US (KFH footer-top style) ─── */
   .reach-us-section {
@@ -1091,10 +1049,6 @@
     width: calc(33.333%);
   }
 
-  @media (max-width: 768px) {
-    .reach-us-grid { margin: 0; }
-    .reach-card { width: 100%; margin: 0; }
-  }
 
   .reach-card-icon {
     width: 40px;
@@ -1240,9 +1194,6 @@
     color: #2b2928;
   }
 
-  @media (max-width: 700px) {
-    .service-row { width: 100%; padding: 15px 25px; }
-  }
 
   .service-row:hover {
     transform: translateY(-10px);
@@ -1258,9 +1209,6 @@
     flex-shrink: 0;
   }
 
-  @media (max-width: 700px) {
-    .service-row-icon { width: 36px; height: 36px; }
-  }
 
   .service-row-icon svg,
   .service-row-icon img {
@@ -1296,21 +1244,94 @@
   }
 
   @media (max-width: 1024px) {
-    .services { padding: 100px 0 90px; }
-    .app-section { padding: 100px 0; }
-    .tools-section { padding: 100px 0; }
-    .news-section { padding: 100px 0; }
-    .site-footer { padding: 100px 0 0; }
+    .services { padding: 80px 0 60px; }
+    .app-section { padding: 80px 0; }
+    .tools-section { padding: 80px 0 60px; }
+    .news-section { padding: 80px 0; }
+    .site-footer { padding: 80px 0 0; }
+    .treasury-content { padding: 40px 30px 40px 0; }
   }
 
   @media (max-width: 768px) {
-    .services { padding: 60px 0 40px; }
-    .app-section { padding: 60px 0; }
-    .tools-section { padding: 60px 0 30px; }
-    .news-section { padding: 60px 0; }
-    .site-footer { padding: 60px 0 0; }
-    .section-title { max-width: 100%; }
-    .services-heading { max-width: 100%; }
+    .services { padding: 48px 0 32px; }
+    .services-heading { max-width: 100%; font-size: 1.5rem; margin-block-end: 1.5rem; }
+    .services-list { margin: 0; padding-top: 0; }
+    .service-row { width: 100%; margin: 8px 0; padding: 16px 20px; }
+    .service-row-icon { width: 36px; height: 36px; }
+
+    .app-section { padding: 48px 0; }
+    .app-phones, .app-info { width: 100%; }
+    .app-info { padding: 24px 0 0; text-align: center; }
+    .app-features li { justify-content: center; }
+    .app-stores { justify-content: center; }
+    .app-qr { margin-inline: auto; }
+
+    .tools-section { padding: 48px 0 32px; }
+    .tools-grid { grid-template-columns: 1fr; }
+    .tool-card { padding: 1rem; font-size: 0.9rem; border-radius: 16px; }
+
+    .news-section { padding: 48px 0; }
+
+    .treasury-content, .treasury-image { width: 100%; }
+    .treasury-content { padding: 32px 16px; }
+    .treasury-content h2 { font-size: 1.4rem; }
+    .treasury-image img { border-radius: 16px; min-height: 200px; }
+
+    .zigzag-img, .zigzag-content { width: 100%; }
+    .zigzag-content { padding: 24px 16px 40px; }
+    .zigzag-content h2 { font-size: 1.4rem; }
+    .zigzag-content p { font-size: 1rem; }
+    .zigzag-btn { font-size: 1rem; padding: 12px 28px; }
+    .zigzag-block, .zigzag-block--reverse { direction: rtl; }
+
+    .reach-us-section { padding: 0 0 32px; }
+    .reach-us-grid { margin: 0; flex-direction: column; }
+    .reach-card { width: 100%; padding: 16px 0; }
+    .phone-table { font-size: 0.75rem; }
+    .phone-table td { padding: 4px 6px 4px 0; }
+    .phone-table strong { font-size: 0.75rem; }
+
+    .site-footer { padding: 48px 0 0; }
+    .footer-grid { flex-direction: column; }
+    .footer-brand { width: 100%; padding-inline-end: 0; margin-bottom: 2rem; }
+    .footer-nav { width: 100%; }
+    .footer-links { width: 100%; padding: 0; margin-top: 1.5rem; }
+    .footer-social-bar { margin-top: 32px; }
+    .social-icons { flex-wrap: wrap; justify-content: center; }
+    .footer-bottom { padding: 1rem 0 1.5rem; }
+    .footer-bottom p { font-size: 0.85rem; }
+    .footer-legal { gap: 4px; }
+    .footer-legal a { font-size: 0.8rem; padding: 0 8px; }
+
+    .section-title { max-width: 100%; font-size: 1.5rem; }
+    .banner-texts { padding: 1.5rem 16px 2rem; gap: 1.5rem; }
+    .banner-desc { font-size: 0.9rem; }
+    .banner-features li { font-size: 0.85rem; }
+    .cta-btn { padding: 16px 24px; font-size: 1rem; }
+    .news-archive a { font-size: 1rem; padding: 12px 28px; }
+  }
+
+  @media (max-width: 480px) {
+    .nav-actions { gap: 4px; }
+    .nav-btn, .lang-toggle, .menu-btn { width: 38px; height: 38px; }
+    .logo-icon { width: 40px; height: 40px; }
+    .banner-circle { width: 220px; height: 220px; }
+    .banner-icon { width: 44px; height: 44px; padding: 6px; }
+    .banner-heading { font-size: 1.2rem; }
+    .banner-features-title { font-size: 1.1rem; }
+    .feature-check { width: 24px; height: 24px; }
+    .carousel-item { width: 56px; height: 56px; }
+    .news-grid { grid-template-columns: 1fr; gap: 16px; }
+    .news-img { height: 160px; }
+    .news-body { padding: 1rem; }
+    .news-body h3 { font-size: 0.85rem; }
+    .app-phone { border-radius: 16px; }
+    .store-badge { height: 36px; }
+    .app-qr { width: 90px; }
+    .zigzag-img img { min-height: 200px; }
+    .tool-tab { padding: 10px 20px; font-size: 0.85rem; }
+    .footer-store-badges img { height: 30px; }
+    .phone-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   }
 
   @keyframes fadeInUp {
@@ -1340,9 +1361,6 @@
     flex-wrap: wrap;
   }
 
-  @media (max-width: 900px) {
-    .footer-brand, .footer-nav { width: 100%; }
-  }
 
   .footer-brand {
     display: flex;
@@ -1398,9 +1416,6 @@
     width: 33.333%;
   }
 
-  @media (max-width: 768px) {
-    .footer-links { width: 100%; padding: 0; margin-top: 1.5rem; }
-  }
 
   .footer-links a {
     opacity: 0.7;
