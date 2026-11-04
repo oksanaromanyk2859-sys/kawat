@@ -6,7 +6,7 @@
   <title>KAWAT — كوات</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Noto+Kufi+Arabic:wght@100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💎</text></svg>">
 </head>
@@ -451,85 +451,101 @@
     </div>
   </section>
 
-  <!-- ════════════ FOOTER-TOP: REACH US (KFH style) ════════════ -->
-  <section class="reach-us-section" id="contact">
-    <div class="container">
-      <div class="reach-us-grid">
-        <div class="reach-card">
-          <div class="reach-card-icon">
-            <img src="images/icon-map.svg" alt="">
+  <!-- ════════════ FOOTER (KFH structure: top/main/bottom inside one footer bg-dark) ════════════ -->
+  <footer class="site-footer" id="contact">
+    <!-- Footer Top: Reach Us -->
+    <div class="reach-us-section">
+      <div class="container">
+        <div class="reach-us-grid">
+          <div class="reach-card">
+            <div class="reach-card-icon">
+              <img src="images/icon-map.svg" alt="">
+            </div>
+            <div class="reach-card-body">
+              <a href="#" class="reach-card-title">تفضل بزيارتنا</a>
+              <p>تحديد موقع أي من فروع بيت التمويل الكويتي أو أجهزة الصرف الآلي بات الآن أسرع وأبسط من خلال محدد مواقع الفروع المصرفية وأجهزة الصرف الآلي.</p>
+            </div>
           </div>
-          <div class="reach-card-body">
-            <a href="#" class="reach-card-title">تفضل بزيارتنا</a>
-            <p>تحديد موقع أي من فروع بيت التمويل الكويتي أو أجهزة الصرف الآلي بات الآن أسرع وأبسط من خلال محدد مواقع الفروع المصرفية وأجهزة الصرف الآلي.</p>
+          <div class="reach-card">
+            <div class="reach-card-icon">
+              <img src="images/icon-support.svg" alt="">
+            </div>
+            <div class="reach-card-body">
+              <a href="#" class="reach-card-title">اتصل بنا 24/7 &quot;الخدمة الهاتفية&quot; 1803333</a>
+              <table class="phone-table">
+                <tr>
+                  <td><span>المملكة المتحدة</span><strong>0-800-014-8898</strong></td>
+                  <td><span>فرنسا</span><strong>0805-086620</strong></td>
+                  <td><span>أمريكا وكندا</span><strong>1-800-818-8608</strong></td>
+                </tr>
+                <tr>
+                  <td><span>تركيا</span><strong>00908507712154</strong></td>
+                  <td><span>ألمانيا</span><strong>0800-181-7080</strong></td>
+                  <td><span>أسبانيا</span><strong>900-905-440</strong></td>
+                </tr>
+              </table>
+            </div>
           </div>
-        </div>
-        <div class="reach-card">
-          <div class="reach-card-icon">
-            <img src="images/icon-support.svg" alt="">
-          </div>
-          <div class="reach-card-body">
-            <a href="#" class="reach-card-title">الخدمة الهاتفية 24/7</a>
-            <p class="reach-phone">1803333</p>
-            <ul class="intl-phones">
-              <li>المملكة المتحدة: <strong>0-800-014-8898</strong></li>
-              <li>فرنسا: <strong>0805-086620</strong></li>
-              <li>أمريكا وكندا: <strong>1-800-818-8608</strong></li>
-              <li>تركيا: <strong>00908507712154</strong></li>
-              <li>ألمانيا: <strong>0800-181-7080</strong></li>
-              <li>أسبانيا: <strong>900-905-440</strong></li>
-            </ul>
-          </div>
-        </div>
-        <div class="reach-card">
-          <div class="reach-card-icon">
-            <img src="images/icon-write.svg" alt="">
-          </div>
-          <div class="reach-card-body">
-            <a href="#" class="reach-card-title">اكتب لنا</a>
-            <p>بإمكانك التواصل معنا وسنقوم بالرد عليك في أقرب وقت ممكن حول أي مشكلة أو استفسار أو اقتراح.</p>
+          <div class="reach-card">
+            <div class="reach-card-icon">
+              <img src="images/icon-write.svg" alt="">
+            </div>
+            <div class="reach-card-body">
+              <a href="#" class="reach-card-title">اكتب لنا</a>
+              <p>بإمكانك التواصل معنا وسنقوم بالرد عليك في أقرب وقت ممكن حول أي مشكلة أو استفسار أو اقتراح.</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- ════════════ FOOTER ════════════ -->
-  <footer class="site-footer">
+    <!-- Footer Main: Company Info + Nav Links -->
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <img src="images/logo.jpg" alt="بيت التمويل الكويتي" class="footer-logo-img">
-          <p>يعتبر بيت التمويل الكويتي رائداً في مسيرة الصيرفة الإسلامية. وهو أول بنك إسلامي أنشئ في دولة الكويت عام 1977.</p>
+          <a href="#" class="footer-logo">
+            <img src="images/logo.jpg" alt="بيت التمويل الكويتي" class="footer-logo-img">
+          </a>
+          <p>يعتبر بيت التمويل الكويتي رائداً في مسيرة الصيرفة الإسلامية. وهو أول بنك إسلامي أنشئ في دولة الكويت عام 1977، واليوم يعد من أكبر البنوك الإسلامية في العالم.</p>
+          <div class="footer-app-download">
+            <h4>تطبيق &quot;KFHOnline&quot; للهواتف الذكية</h4>
+            <div class="footer-store-badges">
+              <a href="#"><img src="images/google-play.svg" alt="Google Play"></a>
+              <a href="#"><img src="images/app-store.png" alt="App Store"></a>
+              <a href="#"><img src="images/appgallery.svg" alt="AppGallery"></a>
+            </div>
+          </div>
         </div>
-        <div class="footer-links">
-          <h4>عن البنك</h4>
-          <a href="#">نبذة عن بيت التمويل الكويتي</a>
-          <a href="#">مجلس الإدارة والإدارة التنفيذية</a>
-          <a href="#">إفصاحات بيت التمويل الكويتي</a>
-          <a href="#">التوعية المصرفية</a>
-          <a href="#">بيان الأجور والعمولات</a>
-          <a href="#">تقارير بيت التمويل الكويتي</a>
-          <a href="#">المؤسسات المالية</a>
-        </div>
-        <div class="footer-links">
-          <h4>المستثمرون</h4>
-          <a href="#">التقارير المالية</a>
-          <a href="#">تقارير سوق العقار المحلي</a>
-          <a href="#">علاقات المستثمرين</a>
-          <a href="#">الاستدامة</a>
-          <a href="#">شكاوى العملاء</a>
-          <a href="#">دليل أمن المعلومات</a>
-          <a href="#">الوظائف</a>
-          <a href="#">رقم الآيبان ورمز السويفت</a>
-        </div>
-        <div class="footer-links">
-          <h4>الدعم</h4>
-          <a href="#">الأسئلة الشائعة</a>
-          <a href="#">أسئلة حول التورق</a>
-          <a href="#">التقييم العقاري</a>
+        <div class="footer-nav">
+          <div class="footer-links">
+            <a href="#">نبذة عن بيت التمويل الكويتي</a>
+            <a href="#">مجلس الإدارة والإدارة التنفيذية</a>
+            <a href="#">إفصاحات بيت التمويل الكويتي</a>
+            <a href="#">التوعية المصرفية</a>
+            <a href="#">بيان الأجور والعمولات</a>
+            <a href="#">تقارير بيت التمويل الكويتي</a>
+            <a href="#">المؤسسات المالية</a>
+          </div>
+          <div class="footer-links">
+            <a href="#">التقارير المالية</a>
+            <a href="#">تقارير سوق العقار المحلي</a>
+            <a href="#">علاقات المستثمرين</a>
+            <a href="#">الاستدامة</a>
+            <a href="#">نبذة عن مجموعة بيت التمويل الكويتي</a>
+            <a href="#">شكاوى العملاء</a>
+            <a href="#">دليل أمن المعلومات</a>
+            <a href="#">الوظائف</a>
+            <a href="#">رقم الآيبان ورمز السويفت</a>
+          </div>
+          <div class="footer-links">
+            <a href="#">الأسئلة الشائعة</a>
+            <a href="#">أسئلة حول التورق</a>
+            <a href="#">التقييم العقاري</a>
+          </div>
         </div>
       </div>
+
+      <!-- Footer Bottom: Social + Copyright + Quick Links -->
       <div class="footer-social-bar">
         <div class="social-icons">
           <a href="#" aria-label="Facebook">
@@ -553,12 +569,12 @@
         </div>
       </div>
       <div class="footer-bottom">
+        <p>بيت التمويل الكويتي جميع الحقوق محفوظة &copy; 2026</p>
         <div class="footer-legal">
-          <a href="#">شروط وأحكام استخدام الموقع</a>
+          <a href="#">شروط وأحكام استخدام الموقع الإلكتروني</a>
           <a href="#">ملفات تعريف الارتباط</a>
           <a href="#">بيان الخصوصية</a>
         </div>
-        <p>بيت التمويل الكويتي جميع الحقوق محفوظة &copy; 2026</p>
       </div>
     </div>
   </footer>
