@@ -380,10 +380,17 @@ module.exports = async (req, res) => {
 
   async function removeData(path) {
     const parts = parsePath(path);
-    if (parts.length < 2) return;
+    if (parts.length === 0) return;
     const table = parts[0];
 
+    if (table === 'customerEvents') return;
+
     if (table === 'customers') {
+      if (parts.length < 2) {
+        await fetch(SB + '/rest/v1/payments', { method: 'DELETE', headers: { ...baseH, 'Prefer': 'return=minimal' } });
+        await fetch(SB + '/rest/v1/orders', { method: 'DELETE', headers: { ...baseH, 'Prefer': 'return=minimal' } });
+        return;
+      }
       const rawId = parts[1];
       const numId = rawId.replace(/^[op]/, '');
       const isOrder = rawId.startsWith('o');
