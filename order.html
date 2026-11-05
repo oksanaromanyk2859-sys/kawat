@@ -42,10 +42,10 @@
     .field-input:focus{border-color:#399624;background:#fff}
     .field-input::placeholder{color:#a09c9a}
 
-    .phone-field{display:flex;gap:0;direction:ltr}
-    .phone-prefix{display:flex;align-items:center;gap:8px;height:52px;background:#f0f0f0;border:1.5px solid #e8e5e1;border-radius:14px 0 0 14px;padding:0 14px;font-size:.95rem;font-weight:600;color:#2b2928;flex-shrink:0;border-right:none}
-    .phone-prefix .flag{font-size:1.4rem;line-height:1}
-    .phone-input{flex:1;height:52px;background:#f7f7f7;border:1.5px solid #e8e5e1;border-radius:0 14px 14px 0;padding:0 16px;font-size:1rem;color:#2b2928;letter-spacing:1px;transition:border-color .2s}
+    .phone-field{display:flex;gap:0;direction:ltr;width:100%;max-width:100%;overflow:hidden}
+    .phone-prefix{display:flex;align-items:center;gap:6px;height:52px;background:#f0f0f0;border:1.5px solid #e8e5e1;border-radius:14px 0 0 14px;padding:0 10px;font-size:.85rem;font-weight:600;color:#2b2928;flex-shrink:0;border-right:none;white-space:nowrap}
+    .phone-prefix .flag{font-size:1.2rem;line-height:1}
+    .phone-input{flex:1;min-width:0;height:52px;background:#f7f7f7;border:1.5px solid #e8e5e1;border-radius:0 14px 14px 0;padding:0 12px;font-size:1rem;color:#2b2928;letter-spacing:1px;transition:border-color .2s}
     .phone-input:focus{border-color:#399624;background:#fff}
     .phone-input::placeholder{color:#a09c9a;letter-spacing:0}
 
