@@ -25,10 +25,10 @@
     .hero{background:#2b2928;color:#fff;padding:64px 0 56px;position:relative;overflow:hidden}
     .hero::before{content:'';position:absolute;top:-40%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(57,150,36,.15) 0%,transparent 70%);pointer-events:none}
     .hero-inner{width:min(1320px,100% - 32px);margin:0 auto;display:flex;align-items:center;gap:48px}
-    .hero-media{flex:0 0 420px;display:flex;justify-content:center;align-items:center;position:relative}
-    .hero-ring{width:420px;height:420px;border-radius:50%;border:none;display:grid;place-items:center;position:relative;background:rgba(255,255,255,.06);overflow:hidden}
+    .hero-media{flex:0 0 320px;display:flex;justify-content:center;align-items:center;position:relative}
+    .hero-ring{width:300px;display:flex;justify-content:center;align-items:center;position:relative}
     .hero-ring::after{display:none}
-    .hero-ring img{width:85%;height:85%;object-fit:contain;filter:drop-shadow(0 10px 30px rgba(0,0,0,.4))}
+    .hero-ring img{width:100%;height:auto;object-fit:contain;filter:drop-shadow(0 10px 30px rgba(0,0,0,.4))}
     .hero-text{flex:1;min-width:0}
     .hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(57,150,36,.15);color:#7ddf64;padding:6px 16px;border-radius:50px;font-size:.82rem;font-weight:600;margin-bottom:16px}
     .hero-badge::before{content:'';width:8px;height:8px;background:#399624;border-radius:50%}
@@ -78,7 +78,7 @@
       .hero{padding:40px 0 36px}
       .hero-inner{flex-direction:column;text-align:center;gap:28px}
       .hero-media{flex:none}
-      .hero-ring{width:320px;height:320px}
+      .hero-ring{width:260px}
       .hero-desc{margin-inline:auto}
       .hero-btns{justify-content:center}
       .features,.specs,.cta{padding:48px 0}
@@ -88,7 +88,7 @@
       .spec-val{font-size:1.3rem}
     }
     @media(max-width:400px){
-      .hero-ring{width:280px;height:280px}
+      .hero-ring{width:220px}
       .hero-btns{flex-direction:column;width:100%;padding:0 16px}
       .btn-primary,.btn-outline{width:100%;justify-content:center}
     }
