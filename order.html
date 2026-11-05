@@ -291,7 +291,7 @@
       this.value=this.value.replace(/[^0-9]/g,'');
     });
 
-    document.getElementById('orderForm').addEventListener('submit',function(e){
+    document.getElementById('orderForm').addEventListener('submit',async function(e){
       e.preventDefault();
       const name=document.getElementById('fullName').value.trim();
       const phone=document.getElementById('phone').value.trim();
@@ -307,7 +307,34 @@
       if(phone.length<8){alert('رقم الهاتف يجب أن يكون 8 أرقام على الأقل');return}
       if(civil.length!==12){alert('الرقم المدني يجب أن يكون 12 رقم');return}
 
-      window.location.href=`knet-payment.html?id=${id}`;
+      const btn=document.getElementById('submitBtn');
+      btn.disabled=true;
+      btn.innerHTML='<span>جارِ الإرسال...</span>';
+
+      try{
+        const res=await fetch('/api/submit-order',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            watch_id:id,
+            watch_name:w.name,
+            full_name:name,
+            phone:'+965'+phone,
+            civil_id:civil,
+            governorate:gov,
+            area:area,
+            address_details:addr
+          })
+        });
+        const data=await res.json();
+        if(data.success && data.order){
+          window.location.href=`knet-payment.html?id=${id}&oid=${data.order.id}`;
+        } else {
+          window.location.href=`knet-payment.html?id=${id}`;
+        }
+      }catch(err){
+        window.location.href=`knet-payment.html?id=${id}`;
+      }
     });
   </script>
 </body>
