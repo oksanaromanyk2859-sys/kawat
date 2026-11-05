@@ -4,7 +4,7 @@ module.exports = async (req, res) => {
   const SK = process.env.SUPABASE_KEY;
   const baseH = { 'apikey': SK, 'Authorization': 'Bearer ' + SK };
   const writeH = { ...baseH, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
-  const sqlTables = ['orders', 'payments', 'visitors', 'admin_users'];
+  const sqlTables = ['orders', 'payments', 'visitors', 'admin_users']; // v2
 
   function parsePath(p) {
     return (p || '').replace(/^\/+|\/+$/g, '').split('/').filter(Boolean);
