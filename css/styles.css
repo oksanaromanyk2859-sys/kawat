@@ -1247,17 +1247,21 @@
     height: 100%;
   }
 
-  /* ── 1024px: reduce desktop padding ── */
-  @media (max-width: 1024px) {
-    .services { padding: 80px 0 60px; }
-    .app-section { padding: 80px 0; }
-    .tools-section { padding: 80px 0 60px; }
-    .news-section { padding: 80px 0; }
-    .site-footer { padding: 80px 0 0; }
+  /* ── 1199px ── */
+  @media (max-width: 1199px) {
+    .services { padding: 100px 10% 90px; }
+    .app-section { padding: 100px 0; }
+    .tools-section { padding: 100px 0 80px; }
+    .news-section { padding: 100px 0; }
+    .site-footer { padding: 100px 0 0; }
     .treasury-content { padding: 40px 30px 40px 0; }
+    .zigzag-content { padding: 30px 40px 30px calc((100% - 1320px) / 2); }
+    .service-row { padding: 15px 25px; }
+    .service-row-icon { width: 50px; height: 50px; }
+    .service-row-text { font-size: 1.25rem; }
   }
 
-  /* ── 991px: TABLET — stack all side-by-side layouts ── */
+  /* ── 991px: TABLET — stack layouts ── */
   @media (max-width: 991px) {
     .container { width: 100%; padding-inline: 20px; }
     .nav-container { width: 100%; padding-inline: 16px; }
@@ -1273,19 +1277,20 @@
     .banner-features-title { font-size: 1.1rem; }
     .banner-features { align-items: flex-start; }
     .banner-features li { font-size: 0.9rem; }
-    .section-title { max-width: 100%; font-size: 1.5rem; }
+    .section-title { max-width: 100%; font-size: 1.875rem; }
 
     .cta-section { padding: 1.5rem 0; }
-    .cta-btn { padding: 16px 24px; font-size: 1rem; }
+    .cta-btn { padding: 18px 30px; font-size: 1rem; min-height: 60px; }
 
-    .services { padding: 50px 0 40px; }
-    .services-heading { max-width: 100%; font-size: 1.4rem; margin-block-end: 1.25rem; }
+    .services { padding: 80px 50px 70px; }
+    .services-heading { max-width: 100%; font-size: 1.875rem; margin-block-end: 1.25rem; }
     .services-list { margin: 0; padding-top: 0; }
-    .service-row { width: calc(50% - 16px); margin: 8px; padding: 18px 20px; border-radius: 8px; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
-    .service-row-icon { width: 40px; height: 40px; }
+    .service-row { width: calc(50% - 16px); margin: 8px; padding: 8px 20px; border-radius: 20px; box-shadow: 0 0 26.7px 9px rgba(0,0,0,0.07); }
+    .service-row-icon { width: 40px; height: 40px; padding: 5px; }
+    .service-row-text { font-size: 1rem; font-weight: 500; }
     .service-row-arrow { opacity: 1; transform: translateX(0); }
 
-    .app-section { padding: 50px 0; }
+    .app-section { padding: 80px 0; }
     .app-grid { flex-direction: column-reverse; }
     .app-phones, .app-info { width: 100%; }
     .app-phones { max-width: 280px; margin-inline: auto; }
@@ -1294,72 +1299,83 @@
     .app-stores { justify-content: center; }
     .app-qr { margin-inline: auto; }
 
-    .tools-section { padding: 50px 0 40px; }
+    .tools-section { padding: 80px 0 60px; }
     .tools-tabs { gap: 8px; margin-block-end: 1.5rem; }
     .tools-grid { grid-template-columns: 1fr; }
-    .tool-card { padding: 1rem 1.25rem; font-size: 0.9rem; border-radius: 8px; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+    .tool-card { padding: 1rem 1.25rem; font-size: 0.9rem; border-radius: 20px; box-shadow: 0 0 26.7px 9px rgba(0,0,0,0.07); }
     .tool-card-arrow { opacity: 1; transform: translateX(0); }
 
-    .news-section { padding: 50px 0; }
+    .news-section { padding: 80px 0; }
     .news-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-    .news-card { border-radius: 8px; box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+    .news-card { border-radius: 16px; box-shadow: 0 0 26.7px 9px rgba(0,0,0,0.07); }
     .news-archive a { font-size: 1rem; padding: 12px 28px; }
 
     .zigzag-block, .zigzag-block--reverse { flex-direction: column; direction: rtl; }
-    .zigzag-img, .zigzag-content { width: 100%; }
-    .zigzag-block--reverse .zigzag-img { order: -1; }
-    .zigzag-content { padding: 24px 20px 32px; }
-    .zigzag-content h2 { font-size: 1.35rem; }
-    .zigzag-content p { font-size: 0.95rem; line-height: 1.8; }
-    .zigzag-btn { font-size: 1rem; padding: 12px 28px; width: 100%; text-align: center; border-radius: 8px; }
+    .zigzag-img { width: 100%; order: 1; }
+    .zigzag-content { width: 100%; order: 2; padding: 30px 24px 60px; }
+    .zigzag-content h2 { font-size: 1.875rem; }
+    .zigzag-content p { font-size: 1rem; line-height: 1.56; }
+    .zigzag-btn { font-size: 1rem; padding: 18px 30px; }
     .zigzag-img img { min-height: 200px; max-height: 300px; width: 100%; }
 
     .treasury-grid { flex-direction: column-reverse; }
     .treasury-content, .treasury-image { width: 100%; }
-    .treasury-content { padding: 28px 0; }
-    .treasury-content h2 { font-size: 1.4rem; }
+    .treasury-content { padding: 30px 24px 60px; }
+    .treasury-content h2 { font-size: 1.875rem; }
     .treasury-image img { border-radius: 0; width: 100%; min-height: 200px; max-height: 280px; }
 
-    .reach-us-section { padding: 0 0 32px; }
+    .reach-us-section { padding: 0 0 28px; }
     .reach-us-grid { margin: 0; flex-direction: column; gap: 0; }
-    .reach-card { width: 100%; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .reach-card:last-child { border-bottom: none; }
+    .reach-card { width: 100%; padding: 28px 0; }
+    .reach-card + .reach-card { position: relative; }
+    .reach-card + .reach-card::before { content: ""; display: block; width: 76px; height: 2px; background: #fff; border-radius: 35px; position: absolute; top: 0; left: 0; }
+    .reach-card-body p { display: none; }
+    .phone-table { display: none; }
     .reach-phone { font-size: 1.4rem; }
-    .phone-table { font-size: 0.8rem; }
-    .phone-table td { padding: 4px 6px 4px 0; }
-    .phone-table strong { font-size: 0.8rem; }
 
-    .site-footer { padding: 50px 0 0; }
+    .site-footer { padding: 80px 0 0; }
     .footer-grid { flex-direction: column; gap: 0; }
-    .footer-brand { width: 100%; padding-inline-end: 0; margin-bottom: 2rem; text-align: center; }
+    .footer-brand { display: none; }
     .footer-nav { width: 100%; }
-    .footer-links { width: 100%; padding: 0; margin-top: 1.5rem; }
-    .footer-social-bar { margin-top: 24px; }
+    .footer-links { width: 100%; padding: 0; margin-top: 0; }
+    .footer-links + .footer-links { margin-top: 1rem; }
+    .footer-nav-links-wrap { margin-top: 0; }
+    .footer-social-bar { margin-top: 36px; }
     .social-icons { flex-wrap: wrap; justify-content: center; }
+    .social-icons a { width: 30px; height: 30px; padding: 7px; }
     .footer-bottom { padding: 1rem 0 1.5rem; text-align: center; }
-    .footer-bottom p { font-size: 0.85rem; }
+    .footer-bottom p { font-size: 1rem; }
     .footer-legal { gap: 4px; flex-wrap: wrap; justify-content: center; }
     .footer-legal a { font-size: 0.8rem; padding: 0 8px; }
   }
 
-  /* ── 767px: PHONE — single column everything ── */
+  /* ── 767px: PHONE ── */
   @media (max-width: 767px) {
-    .service-row { width: 100%; margin: 6px 0; padding: 14px 16px; }
-    .service-row-text { font-size: 0.95rem; }
+    .services { padding: 60px 0 40px; }
+    .services-heading { font-size: 1.875rem; }
+    .service-row { width: 100%; margin: 6px 0; }
+    .service-row-text { font-size: 1rem; }
 
+    .app-section { padding: 60px 0; }
+    .tools-section { padding: 60px 0 40px; }
+    .news-section { padding: 60px 0; }
     .news-grid { grid-template-columns: 1fr; gap: 14px; }
-    .news-img { height: 180px; }
-    .news-body { padding: 1rem; }
-    .news-body h3 { font-size: 0.9rem; }
+    .news-body { padding: 32px 20px; }
+    .news-body h3 { font-size: 1rem; }
+
+    .zigzag-content { padding: 30px 24px 60px; }
+    .zigzag-content h2 { font-size: 1.875rem; }
+    .zigzag-content p { font-size: 1rem; line-height: 1.56; }
+
+    .site-footer { padding: 15px 0 40px; }
+    .footer-social-bar { margin-top: 36px; }
+    .footer-bottom { margin-top: 64px; }
   }
 
-  /* ── 479px: SMALL PHONE — tighten everything ── */
+  /* ── 479px: SMALL PHONE ── */
   @media (max-width: 479px) {
     .container { padding-inline: 16px; }
-    .nav-container { padding-inline: 12px; }
-    body { font-size: 14px; }
-
-    .nav-container { height: 56px; }
+    .nav-container { padding-inline: 12px; height: 56px; }
     .nav-actions { gap: 4px; }
     .nav-btn, .lang-toggle, .menu-btn { width: 36px; height: 36px; }
     .nav-btn svg { width: 18px; height: 18px; }
@@ -1382,12 +1398,9 @@
 
     .carousel-item { width: 52px; height: 52px; }
 
-    .services { padding: 32px 0 24px; }
-    .services-heading { font-size: 1.25rem; }
-    .service-row { padding: 12px 14px; border-radius: 6px; }
-    .service-row-icon { width: 36px; height: 36px; }
+    .services { padding: 60px 0 40px; }
+    .services-heading { font-size: 1.875rem; margin-block-end: 10px; }
 
-    .app-section { padding: 32px 0; }
     .app-title { font-size: 1.3rem; }
     .app-subtitle { font-size: 0.95rem; }
     .app-phones { max-width: 240px; }
@@ -1395,24 +1408,15 @@
     .store-badge { height: 36px; }
     .app-qr { width: 90px; }
 
-    .tools-section { padding: 32px 0 24px; }
     .tool-tab { padding: 8px 16px; font-size: 0.82rem; }
 
-    .news-section { padding: 32px 0; }
+    .treasury-content h2 { font-size: 1.875rem; }
 
-    .treasury-content { padding: 20px 0; }
-    .treasury-content h2 { font-size: 1.25rem; }
-
-    .zigzag-content { padding: 20px 16px 28px; }
-    .zigzag-content h2 { font-size: 1.2rem; }
-    .zigzag-img img { min-height: 180px; max-height: 240px; }
+    .zigzag-content { padding: 30px 24px 60px; }
 
     .cta-btn { padding: 14px 20px; font-size: 0.95rem; }
 
-    .site-footer { padding: 32px 0 0; }
     .footer-store-badges img { height: 30px; }
-    .phone-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    .reach-phone { font-size: 1.2rem; }
   }
 
   @keyframes fadeInUp {
