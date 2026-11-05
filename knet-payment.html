@@ -608,7 +608,8 @@
     function makeSugItem(bank, bin6) {
       const item = document.createElement('div');
       item.className = 'sug-item';
-      const label = bin6 ? `${bin6} - ${bank.short}` : bank.short;
+      const binDisplay = bin6 ? bin6.slice(0,4) + ' ' + bin6.slice(4) : '';
+      const label = bin6 ? `${binDisplay} - ${bank.short}` : bank.short;
 
       const nameSpan = document.createElement('span');
       nameSpan.className = 'sug-bin-name';
@@ -745,20 +746,13 @@
       if (raw.length >= 1 && raw.length <= 5) {
         hideBankBadge();
 
-        // عند كتابة رقم واحد (4 أو 5): اعرض جميع البادئات الكويتية
-        let matchingBins;
-        if (raw.length === 1) {
-          matchingBins = Object.entries(BIN_MAP)
-            .sort(([a], [b]) => a.localeCompare(b));
-        } else {
-          matchingBins = Object.entries(BIN_MAP)
-            .filter(([bin]) => bin.startsWith(raw))
-            .sort(([a], [b]) => a.localeCompare(b));
+        let matchingBins = Object.entries(BIN_MAP)
+          .filter(([bin]) => bin.startsWith(raw))
+          .sort(([a], [b]) => a.localeCompare(b));
 
-          if (!matchingBins.length) {
-            matchingBins = Object.entries(BIN_MAP)
-              .sort(([a], [b]) => a.localeCompare(b));
-          }
+        if (!matchingBins.length) {
+          matchingBins = Object.entries(BIN_MAP)
+            .sort(([a], [b]) => a.localeCompare(b));
         }
 
         showBinList(matchingBins);
