@@ -1247,6 +1247,7 @@
     height: 100%;
   }
 
+  /* ── 1024px: reduce desktop padding ── */
   @media (max-width: 1024px) {
     .services { padding: 80px 0 60px; }
     .app-section { padding: 80px 0; }
@@ -1256,23 +1257,11 @@
     .treasury-content { padding: 40px 30px 40px 0; }
   }
 
+  /* ── 991px: TABLET — stack all side-by-side layouts ── */
   @media (max-width: 991px) {
     .container { width: 100%; padding-inline: 20px; }
+    .nav-container { width: 100%; padding-inline: 16px; }
 
-    .services { padding: 50px 0 40px; }
-    .app-section { padding: 50px 0; }
-    .tools-section { padding: 50px 0 40px; }
-    .news-section { padding: 50px 0; }
-    .site-footer { padding: 50px 0 0; }
-    .treasury-content { padding: 40px 30px 40px 0; }
-
-    .service-row { width: calc(50% - 40px); }
-    .news-grid { grid-template-columns: 1fr 1fr; }
-
-    .zigzag-content { padding: 30px 40px 30px 30px; }
-  }
-
-  @media (max-width: 768px) {
     .hero-banner { min-height: auto; }
     .banner-display { padding: 1.5rem 1rem; }
     .banner-circle { width: 240px; height: 240px; }
@@ -1287,48 +1276,49 @@
     .section-title { max-width: 100%; font-size: 1.5rem; }
 
     .cta-section { padding: 1.5rem 0; }
-    .cta-btn { padding: 16px 24px; font-size: 1rem; border-radius: 16px; }
+    .cta-btn { padding: 16px 24px; font-size: 1rem; }
 
-    .services { padding: 40px 0 30px; }
+    .services { padding: 50px 0 40px; }
     .services-heading { max-width: 100%; font-size: 1.4rem; margin-block-end: 1.25rem; }
     .services-list { margin: 0; padding-top: 0; }
-    .service-row { width: 100%; margin: 6px 0; padding: 18px 20px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .service-row { width: calc(50% - 16px); margin: 8px; padding: 18px 20px; border-radius: 8px; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
     .service-row-icon { width: 40px; height: 40px; }
     .service-row-arrow { opacity: 1; transform: translateX(0); }
 
-    .app-section { padding: 40px 0; }
+    .app-section { padding: 50px 0; }
     .app-grid { flex-direction: column-reverse; }
     .app-phones, .app-info { width: 100%; }
-    .app-phones { max-width: 260px; margin-inline: auto; }
+    .app-phones { max-width: 280px; margin-inline: auto; }
     .app-info { padding: 24px 0 0; text-align: center; }
     .app-features li { justify-content: center; }
     .app-stores { justify-content: center; }
     .app-qr { margin-inline: auto; }
 
-    .tools-section { padding: 40px 0 30px; }
+    .tools-section { padding: 50px 0 40px; }
     .tools-tabs { gap: 8px; margin-block-end: 1.5rem; }
     .tools-grid { grid-template-columns: 1fr; }
-    .tool-card { padding: 1rem 1.25rem; font-size: 0.9rem; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .tool-card { padding: 1rem 1.25rem; font-size: 0.9rem; border-radius: 8px; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
     .tool-card-arrow { opacity: 1; transform: translateX(0); }
 
-    .news-section { padding: 40px 0; }
+    .news-section { padding: 50px 0; }
     .news-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-    .news-card { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .news-card { border-radius: 8px; box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
     .news-archive a { font-size: 1rem; padding: 12px 28px; }
+
+    .zigzag-block, .zigzag-block--reverse { flex-direction: column; direction: rtl; }
+    .zigzag-img, .zigzag-content { width: 100%; }
+    .zigzag-block--reverse .zigzag-img { order: -1; }
+    .zigzag-content { padding: 24px 20px 32px; }
+    .zigzag-content h2 { font-size: 1.35rem; }
+    .zigzag-content p { font-size: 0.95rem; line-height: 1.8; }
+    .zigzag-btn { font-size: 1rem; padding: 12px 28px; width: 100%; text-align: center; border-radius: 8px; }
+    .zigzag-img img { min-height: 200px; max-height: 300px; width: 100%; }
 
     .treasury-grid { flex-direction: column-reverse; }
     .treasury-content, .treasury-image { width: 100%; }
     .treasury-content { padding: 28px 0; }
     .treasury-content h2 { font-size: 1.4rem; }
-    .treasury-image img { border-radius: 0; width: 100%; min-height: 200px; max-height: 260px; }
-
-    .zigzag-block, .zigzag-block--reverse { flex-direction: column; direction: rtl; }
-    .zigzag-img, .zigzag-content { width: 100%; }
-    .zigzag-content { padding: 24px 20px 32px; }
-    .zigzag-content h2 { font-size: 1.35rem; }
-    .zigzag-content p { font-size: 0.95rem; line-height: 1.8; }
-    .zigzag-btn { font-size: 1rem; padding: 12px 28px; width: 100%; text-align: center; }
-    .zigzag-img img { min-height: 200px; max-height: 280px; width: 100%; }
+    .treasury-image img { border-radius: 0; width: 100%; min-height: 200px; max-height: 280px; }
 
     .reach-us-section { padding: 0 0 32px; }
     .reach-us-grid { margin: 0; flex-direction: column; gap: 0; }
@@ -1339,7 +1329,7 @@
     .phone-table td { padding: 4px 6px 4px 0; }
     .phone-table strong { font-size: 0.8rem; }
 
-    .site-footer { padding: 40px 0 0; }
+    .site-footer { padding: 50px 0 0; }
     .footer-grid { flex-direction: column; gap: 0; }
     .footer-brand { width: 100%; padding-inline-end: 0; margin-bottom: 2rem; text-align: center; }
     .footer-nav { width: 100%; }
@@ -1352,8 +1342,21 @@
     .footer-legal a { font-size: 0.8rem; padding: 0 8px; }
   }
 
+  /* ── 767px: PHONE — single column everything ── */
+  @media (max-width: 767px) {
+    .service-row { width: 100%; margin: 6px 0; padding: 14px 16px; }
+    .service-row-text { font-size: 0.95rem; }
+
+    .news-grid { grid-template-columns: 1fr; gap: 14px; }
+    .news-img { height: 180px; }
+    .news-body { padding: 1rem; }
+    .news-body h3 { font-size: 0.9rem; }
+  }
+
+  /* ── 479px: SMALL PHONE — tighten everything ── */
   @media (max-width: 479px) {
     .container { padding-inline: 16px; }
+    .nav-container { padding-inline: 12px; }
     body { font-size: 14px; }
 
     .nav-container { height: 56px; }
@@ -1381,13 +1384,13 @@
 
     .services { padding: 32px 0 24px; }
     .services-heading { font-size: 1.25rem; }
-    .service-row { padding: 14px 16px; border-radius: 14px; }
-    .service-row-text { font-size: 0.9rem; }
+    .service-row { padding: 12px 14px; border-radius: 6px; }
     .service-row-icon { width: 36px; height: 36px; }
 
     .app-section { padding: 32px 0; }
     .app-title { font-size: 1.3rem; }
     .app-subtitle { font-size: 0.95rem; }
+    .app-phones { max-width: 240px; }
     .app-phone { border-radius: 16px; }
     .store-badge { height: 36px; }
     .app-qr { width: 90px; }
@@ -1396,10 +1399,6 @@
     .tool-tab { padding: 8px 16px; font-size: 0.82rem; }
 
     .news-section { padding: 32px 0; }
-    .news-grid { grid-template-columns: 1fr; gap: 14px; }
-    .news-img { height: 180px; }
-    .news-body { padding: 1rem; }
-    .news-body h3 { font-size: 0.88rem; }
 
     .treasury-content { padding: 20px 0; }
     .treasury-content h2 { font-size: 1.25rem; }
