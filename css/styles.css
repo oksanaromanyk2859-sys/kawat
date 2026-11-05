@@ -622,6 +622,28 @@
     box-shadow: 0 0 0 4px var(--green-10);
   }
 
+  .view-all-colors {
+    text-align: center;
+    padding: 0.75rem 0 0;
+  }
+
+  .view-colors-btn {
+    display: inline-block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--green);
+    border: 2px solid var(--green);
+    border-radius: 50px;
+    padding: 10px 32px;
+    transition: var(--transition);
+    text-decoration: none;
+  }
+
+  .view-colors-btn:hover {
+    background: var(--green);
+    color: #fff;
+  }
+
   @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
