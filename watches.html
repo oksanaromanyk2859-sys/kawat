@@ -232,7 +232,7 @@
       bar.classList.add('show');
     });
     document.getElementById('btnGo').addEventListener('click',()=>{
-      if(sel)alert('تم اختيار الساعة بنجاح! سيتم التواصل معك قريباً.');
+      if(sel)window.location.href=`order.html?id=${sel}`;
     });
   </script>
 </body>
