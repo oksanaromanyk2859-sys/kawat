@@ -1153,20 +1153,20 @@
   .cta-wrapper {
     max-width: 600px;
     margin-inline: auto;
+    text-align: center;
   }
 
   .cta-btn {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    width: 100%;
-    padding: 22px 40px;
+    gap: 10px;
+    padding: 14px 32px;
     background: #24604f;
     color: #fff;
     border-radius: 50px;
-    font-size: clamp(1.1rem, 3vw, 1.25rem);
-    font-weight: 700;
+    font-size: 1rem;
+    font-weight: 600;
     font-family: var(--font);
     text-decoration: none;
     transition: all 0.4s ease-in-out;
@@ -1464,7 +1464,7 @@
     .section-title { max-width: 100%; font-size: 1.875rem; }
 
     .cta-section { padding: 1.5rem 0; }
-    .cta-btn { padding: 18px 30px; font-size: 1rem; min-height: 60px; }
+    .cta-btn { padding: 12px 28px; font-size: 0.95rem; }
 
     .services { padding: 80px 50px 70px; }
     .services-heading { max-width: 100%; font-size: 1.875rem; margin-block-end: 1.25rem; }
@@ -1598,7 +1598,7 @@
 
     .zigzag-content { padding: 30px 24px 60px; }
 
-    .cta-btn { padding: 14px 20px; font-size: 0.95rem; }
+    .cta-btn { padding: 10px 24px; font-size: 0.9rem; }
 
     .footer-store-badges img { height: 30px; }
     .footer-app-mobile .footer-store-badges { flex-direction: column; align-items: center; gap: 28px; }
