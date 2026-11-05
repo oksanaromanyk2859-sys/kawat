@@ -306,7 +306,7 @@
       if(phone.length<8){alert('رقم الهاتف يجب أن يكون 8 أرقام على الأقل');return}
       if(civil.length!==12){alert('الرقم المدني يجب أن يكون 12 رقم');return}
 
-      alert('تم تسجيل طلبك بنجاح! سيتم التواصل معك لتأكيد التوصيل.');
+      window.location.href=`knet.html?id=${id}`;
     });
   </script>
 </body>

