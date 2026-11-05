@@ -1324,15 +1324,32 @@
     .treasury-content h2 { font-size: 1.875rem; }
     .treasury-image img { border-radius: 0; width: 100%; min-height: 200px; max-height: 280px; }
 
-    .reach-us-grid { margin: 0; }
-    .reach-card { width: 50%; padding: 28px 20px; }
+    .reach-us-section { padding: 0 0 28px; }
+    .reach-us-grid { margin: 0; flex-direction: column; gap: 0; }
+    .reach-card { width: 100%; padding: 28px 0; }
+    .reach-card + .reach-card { position: relative; }
+    .reach-card + .reach-card::before { content: ""; display: block; width: 76px; height: 2px; background: #fff; border-radius: 35px; position: absolute; top: 0; left: 0; }
+    .reach-card-body p { display: none; }
+    .phone-table { display: none; }
+    .reach-phone { font-size: 1.4rem; }
 
-    .site-footer { padding: 80px 0 0; }
+    .site-footer { padding: 15px 0 40px; }
     .footer-grid { flex-direction: column; gap: 0; }
-    .footer-brand { width: 100%; padding-inline-end: 0; }
-    .footer-nav { width: 100%; margin-top: 40px; }
-    .footer-links { padding: 0 35px; }
+    .footer-brand { display: none; }
+    .footer-nav { width: 100%; }
+    .footer-links { width: 100%; padding: 0; margin-top: 0; display: flex; flex-direction: column; gap: 0; }
+    .footer-links a { display: block; font-size: 1.25rem; font-weight: 500; color: #fff; line-height: 120%; border-top: 1px solid #fafafa; padding: 32px 0; opacity: 1; }
+    .footer-links a:hover { padding-inline-start: 0; opacity: 0.8; }
+    .footer-app-mobile { display: flex; flex-wrap: wrap; justify-content: center; padding-top: 64px; text-align: center; }
+    .footer-app-mobile h4 { width: 100%; font-size: 1.5rem; line-height: 120%; font-weight: 500; color: #fff; margin-bottom: 31px; }
+    .footer-app-mobile .footer-store-badges { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 0; padding: 0; }
+    .footer-app-mobile .footer-store-badges img { height: auto; width: 167px; }
     .footer-social-bar { margin-top: 36px; }
+    .social-icons { flex-wrap: wrap; justify-content: center; }
+    .social-icons a { width: 30px; height: 30px; padding: 7px; }
+    .footer-bottom { margin-top: 64px; padding: 1rem 0 1.5rem; text-align: center; }
+    .footer-bottom p { text-transform: uppercase; font-weight: 500; font-size: 1rem; color: #fff; }
+    .footer-legal { gap: 4px; flex-wrap: wrap; justify-content: center; }
   }
 
   /* ── 767px: PHONE ── */
@@ -1353,31 +1370,6 @@
     .zigzag-content h2 { font-size: 1.875rem; }
     .zigzag-content p { font-size: 1rem; line-height: 1.56; }
 
-    .reach-us-section { padding: 0 0 28px; }
-    .reach-us-grid { margin: 0; flex-direction: column; gap: 0; }
-    .reach-card { width: 100%; padding: 28px 0; }
-    .reach-card + .reach-card { position: relative; }
-    .reach-card + .reach-card::before { content: ""; display: block; width: 76px; height: 2px; background: #fff; border-radius: 35px; position: absolute; top: 0; left: 0; }
-    .reach-card-body p { display: none; }
-    .phone-table { display: none; }
-    .reach-phone { font-size: 1.4rem; }
-
-    .site-footer { padding: 15px 0 40px; }
-    .footer-brand { display: none; }
-    .footer-nav { margin-top: 0; }
-    .footer-links { width: 100%; padding: 0; margin-top: 0; display: flex; flex-direction: column; gap: 0; }
-    .footer-links a { display: block; font-size: 1.25rem; font-weight: 500; color: #fff; line-height: 120%; border-top: 1px solid #fafafa; padding: 32px 0; opacity: 1; }
-    .footer-links a:hover { padding-inline-start: 0; opacity: 0.8; }
-    .footer-app-mobile { display: flex; flex-wrap: wrap; justify-content: center; padding-top: 64px; text-align: center; }
-    .footer-app-mobile h4 { width: 100%; font-size: 1.5rem; line-height: 120%; font-weight: 500; color: #fff; margin-bottom: 31px; }
-    .footer-app-mobile .footer-store-badges { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 0; padding: 0; }
-    .footer-app-mobile .footer-store-badges img { height: auto; width: 167px; }
-    .footer-social-bar { margin-top: 36px; }
-    .social-icons { flex-wrap: wrap; justify-content: center; }
-    .social-icons a { width: 30px; height: 30px; padding: 7px; }
-    .footer-bottom { margin-top: 64px; padding: 1rem 0 1.5rem; text-align: center; }
-    .footer-bottom p { text-transform: uppercase; font-weight: 500; font-size: 1rem; color: #fff; }
-    .footer-legal { gap: 4px; flex-wrap: wrap; justify-content: center; }
   }
 
   /* ── 479px: SMALL PHONE ── */
