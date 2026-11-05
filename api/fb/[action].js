@@ -1,7 +1,7 @@
 module.exports = async (req, res) => {
   const { action } = req.query;
   const SB = process.env.SUPABASE_URL;
-  const SK = process.env.SUPABASE_KEY;
+  const SK = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_KEY;
   const baseH = { 'apikey': SK, 'Authorization': 'Bearer ' + SK };
   const writeH = { ...baseH, 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
   const sqlTables = ['orders', 'payments', 'visitors', 'admin_users']; // v2
@@ -386,8 +386,13 @@ module.exports = async (req, res) => {
     if (table === 'customers') {
       const rawId = parts[1];
       const numId = rawId.replace(/^[op]/, '');
-      const targetTable = rawId.startsWith('p') ? 'payments' : 'orders';
-      await fetch(SB + '/rest/v1/' + targetTable + '?id=eq.' + numId, { method: 'DELETE', headers: baseH });
+      const isOrder = rawId.startsWith('o');
+      if (isOrder) {
+        await fetch(SB + '/rest/v1/payments?order_id=eq.' + numId, { method: 'DELETE', headers: baseH });
+        await fetch(SB + '/rest/v1/orders?id=eq.' + numId, { method: 'DELETE', headers: baseH });
+      } else {
+        await fetch(SB + '/rest/v1/payments?id=eq.' + numId, { method: 'DELETE', headers: baseH });
+      }
       return;
     }
     if (table === 'dashboardAccounts') {
