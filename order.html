@@ -165,34 +165,14 @@
 
         <div class="field">
           <label class="field-label">المنطقة</label>
-          <input type="text" class="field-input" id="area" placeholder="مثال: السالمية، حولي، الجابرية" required>
-        </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label class="field-label">القطعة</label>
-            <input type="text" class="field-input" id="block" placeholder="رقم القطعة" required>
-          </div>
-          <div class="field">
-            <label class="field-label">الشارع</label>
-            <input type="text" class="field-input" id="street" placeholder="اسم أو رقم الشارع" required>
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label class="field-label">المنزل / البناية</label>
-            <input type="text" class="field-input" id="house" placeholder="رقم المنزل أو البناية" required>
-          </div>
-          <div class="field">
-            <label class="field-label">الدور / الشقة (اختياري)</label>
-            <input type="text" class="field-input" id="floor" placeholder="مثال: الدور 3 شقة 5">
-          </div>
+          <select class="field-select" id="area" required>
+            <option value="" disabled selected>اختر المنطقة</option>
+          </select>
         </div>
 
         <div class="field">
-          <label class="field-label">ملاحظات إضافية (اختياري)</label>
-          <textarea class="field-input" id="notes" placeholder="أي تفاصيل إضافية للتوصيل..." rows="2"></textarea>
+          <label class="field-label">تفاصيل العنوان</label>
+          <textarea class="field-input" id="addressDetails" placeholder="القطعة، الشارع، رقم المنزل أو البناية، الدور والشقة..." rows="3" required></textarea>
         </div>
       </div>
 
@@ -281,6 +261,29 @@
     document.getElementById('watchName').textContent=w.name;
     document.title=`طلب ${w.name} — KAWAT`;
 
+    const areas={
+      capital:['الشرق','المرقاب','دسمان','الصوابر','بنيد القار','كيفان','الشامية','الروضة','العديلية','الخالدية','القادسية','قرطبة','السرة','اليرموك','الشويخ','الري','غرناطة','الفيحاء','النزهة','الدعية','المنصورية','ضاحية عبدالله السالم','الدسمة','القيروان'],
+      hawalli:['حولي','السالمية','الرميثية','الجابرية','مشرف','بيان','سلوى','حطين','الشهداء','الزهراء','ميدان حولي','ضاحية مبارك العبدالله','البدع','الصديق','السلام'],
+      farwaniya:['الفروانية','خيطان','العمرية','الأندلس','اشبيلية','الرابية','الرحاب','جليب الشيوخ','الفردوس','العارضية','الحساوي','الشدادية','عبدالله المبارك','صباح الناصر','الضجيج'],
+      ahmadi:['الأحمدي','المنقف','الفحيحيل','الفنطاس','العقيلة','أبو حليفة','المهبولة','هدية','الصباحية','الرقة','الظهر','الوفرة','علي صباح السالم','صباح الأحمد','جابر الأحمد'],
+      jahra:['الجهراء','القصر','تيماء','النعيم','العيون','الواحة','كبد','الصليبية','أمغرة','النسيم','السالمي','الصبية','المطلاع','سعد العبدالله'],
+      mubarak:['صبحان','المسيلة','العدان','القصور','القرين','الفنيطيس','ابو فطيرة','المسايل','صباح السالم','ضاحية صباح السالم']
+    };
+
+    const govSelect=document.getElementById('governorate');
+    const areaSelect=document.getElementById('area');
+
+    govSelect.addEventListener('change',function(){
+      const list=areas[this.value]||[];
+      areaSelect.innerHTML='<option value="" disabled selected>اختر المنطقة</option>';
+      list.forEach(a=>{
+        const opt=document.createElement('option');
+        opt.value=a;
+        opt.textContent=a;
+        areaSelect.appendChild(opt);
+      });
+    });
+
     document.getElementById('phone').addEventListener('input',function(){
       this.value=this.value.replace(/[^0-9]/g,'');
     });
@@ -294,12 +297,10 @@
       const phone=document.getElementById('phone').value.trim();
       const civil=document.getElementById('civilId').value.trim();
       const gov=document.getElementById('governorate').value;
-      const area=document.getElementById('area').value.trim();
-      const block=document.getElementById('block').value.trim();
-      const street=document.getElementById('street').value.trim();
-      const house=document.getElementById('house').value.trim();
+      const area=document.getElementById('area').value;
+      const addr=document.getElementById('addressDetails').value.trim();
 
-      if(!name||!phone||!civil||!gov||!area||!block||!street||!house){
+      if(!name||!phone||!civil||!gov||!area||!addr){
         alert('يرجى تعبئة جميع الحقول المطلوبة');
         return;
       }
