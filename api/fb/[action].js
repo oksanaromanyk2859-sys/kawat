@@ -271,10 +271,22 @@ module.exports = async (req, res) => {
     return null;
   }
 
+  async function readActiveVisitors() {
+    const since = new Date(Date.now() - 15000).toISOString();
+    try {
+      const r = await fetch(SB + '/rest/v1/visitors?created_at=gte.' + encodeURIComponent(since) + '&select=user_agent', { headers: baseH });
+      const rows = await r.json();
+      if (!Array.isArray(rows)) return 0;
+      const unique = new Set(rows.map(v => v.user_agent));
+      return unique.size;
+    } catch (e) { return 0; }
+  }
+
   async function readData(path) {
     const parts = parsePath(path);
     if (parts.length === 0) return null;
 
+    if (parts[0] === 'activeVisitors') return readActiveVisitors();
     if (parts[0] === 'dashboardAccounts') return readDashboardAccounts(parts);
     if (parts[0] === 'customers') return readCustomers(parts);
     if (parts[0] === 'customerEvents') return readCustomerEvents(parts);

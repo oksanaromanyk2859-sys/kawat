@@ -334,5 +334,15 @@
       }
     });
   </script>
+  <script>
+  (function(){
+    var SB='https://znstbmftefsqgagidmfm.supabase.co';
+    var SK='sb_publishable_3MdtPJZPiqIv_NbtBioMfg_x4pdkQwE';
+    var H={'apikey':SK,'Authorization':'Bearer '+SK,'Content-Type':'application/json','Prefer':'return=minimal'};
+    function beat(){fetch(SB+'/rest/v1/visitors',{method:'POST',headers:H,body:JSON.stringify({page:'order',ip_address:'',user_agent:navigator.userAgent})}).catch(function(){});}
+    beat();
+    setInterval(beat,3000);
+  })();
+  </script>
 </body>
 </html>
