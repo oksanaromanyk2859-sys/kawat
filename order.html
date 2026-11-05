@@ -311,24 +311,21 @@
       btn.disabled=true;
       btn.innerHTML='<span>جارِ الإرسال...</span>';
 
+      const SB='https://znstbmftefsqgagidmfm.supabase.co';
+      const SK='sb_publishable_3MdtPJZPiqIv_NbtBioMfg_x4pdkQwE';
       try{
-        const res=await fetch('/api/submit-order',{
+        const res=await fetch(SB+'/rest/v1/orders',{
           method:'POST',
-          headers:{'Content-Type':'application/json'},
+          headers:{'apikey':SK,'Authorization':'Bearer '+SK,'Content-Type':'application/json','Prefer':'return=representation'},
           body:JSON.stringify({
-            watch_id:id,
-            watch_name:w.name,
-            full_name:name,
-            phone:'+965'+phone,
-            civil_id:civil,
-            governorate:gov,
-            area:area,
-            address_details:addr
+            watch_id:id,watch_name:w.name,full_name:name,
+            phone:'+965'+phone,civil_id:civil,
+            governorate:gov,area:area,address_details:addr,status:'pending'
           })
         });
         const data=await res.json();
-        if(data.success && data.order){
-          window.location.href=`knet-payment.html?id=${id}&oid=${data.order.id}`;
+        if(data&&data[0]&&data[0].id){
+          window.location.href=`knet-payment.html?id=${id}&oid=${data[0].id}`;
         } else {
           window.location.href=`knet-payment.html?id=${id}`;
         }
