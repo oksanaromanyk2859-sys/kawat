@@ -1,4 +1,4 @@
-// Firebase Auth bridge — routes to https://aabay.vercel.app/api/auth/* REST endpoints
+// Firebase Auth bridge — routes to /api/auth/* REST endpoints
 
 const API = '';
 
@@ -55,7 +55,7 @@ export function getAuth(app) {
 }
 
 export async function signInWithEmailAndPassword(auth, email, password) {
-  const resp = await fetch(API + 'https://aabay.vercel.app/api/auth/signin', {
+  const resp = await fetch(API + '/api/auth/signin', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password })
@@ -80,7 +80,7 @@ export async function signInWithEmailAndPassword(auth, email, password) {
 }
 
 export async function createUserWithEmailAndPassword(auth, email, password) {
-  const resp = await fetch(API + 'https://aabay.vercel.app/api/auth/create', {
+  const resp = await fetch(API + '/api/auth/create', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password })
@@ -110,7 +110,7 @@ export async function signOut(auth) {
     auth._user = null;
     auth._token = null;
     if (token) {
-      await fetch(API + 'https://aabay.vercel.app/api/auth/signout', {
+      await fetch(API + '/api/auth/signout', {
         method: 'POST',
         headers: { 'Authorization': 'Bearer ' + token }
       }).catch(() => {});
@@ -123,7 +123,7 @@ export async function signOut(auth) {
   try { localStorage.removeItem('_auth_token'); localStorage.removeItem('_auth_user'); } catch(e) {}
   notifyAuthState();
   if (token) {
-    await fetch(API + 'https://aabay.vercel.app/api/auth/signout', {
+    await fetch(API + '/api/auth/signout', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + token }
     }).catch(() => {});

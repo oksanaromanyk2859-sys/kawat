@@ -1,6 +1,9 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    { "source": "/api/settings/geoBlocking.json", "destination": "/api/settings/geoBlocking" }
+  ],
   "functions": {
     "api/**/*.js": {
       "memory": 256,

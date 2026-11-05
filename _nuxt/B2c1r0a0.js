@@ -1,4 +1,4 @@
-// Firebase Realtime Database bridge — routes all ops through https://aabay.vercel.app/api/fb/* REST endpoints
+// Firebase Realtime Database bridge — routes all ops through /api/fb/* REST endpoints
 
 const API = '';  // relative, same origin
 
@@ -60,7 +60,7 @@ export function child(parentRef, path) {
 
 export async function get(refObj) {
   try {
-    const resp = await fetch(API + 'https://aabay.vercel.app/api/fb/read', {
+    const resp = await fetch(API + '/api/fb/read', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ path: refObj._path })
@@ -75,7 +75,7 @@ export async function get(refObj) {
 
 export async function set(refObj, value) {
   const v = processValue(value);
-  await fetch(API + 'https://aabay.vercel.app/api/fb/set', {
+  await fetch(API + '/api/fb/set', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ path: refObj._path, value: v })
@@ -84,7 +84,7 @@ export async function set(refObj, value) {
 
 export async function update(refObj, values) {
   const v = processValue(values);
-  await fetch(API + 'https://aabay.vercel.app/api/fb/update', {
+  await fetch(API + '/api/fb/update', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ path: refObj._path, value: v })
@@ -101,7 +101,7 @@ export function push(refObj, value) {
 }
 
 export async function remove(refObj) {
-  await fetch(API + 'https://aabay.vercel.app/api/fb/remove', {
+  await fetch(API + '/api/fb/remove', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ path: refObj._path })
@@ -122,7 +122,7 @@ export function onValue(refObj, callback, options) {
   }
 
   var poll = function() {
-    fetch(API + 'https://aabay.vercel.app/api/fb/poll?path=' + encodeURIComponent(path))
+    fetch(API + '/api/fb/poll?path=' + encodeURIComponent(path))
       .then(function(r) { return r.json(); })
       .then(function(data) {
         var snap = new DataSnapshot(refObj, data.value != null ? data.value : null);
@@ -163,7 +163,7 @@ function _startHeartbeat() {
   if (_heartbeatInterval) return;
   _heartbeatInterval = setInterval(() => {
     for (const hp of _heartbeatPaths) {
-      fetch(API + 'https://aabay.vercel.app/api/fb/update', {
+      fetch(API + '/api/fb/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ path: hp.parentPath, value: { 'presence/lastChangedAt': Date.now(), 'presence/state': 'online' } })
@@ -177,7 +177,7 @@ if (typeof window !== 'undefined') {
     if (_heartbeatInterval) { clearInterval(_heartbeatInterval); _heartbeatInterval = null; }
     for (const hp of _heartbeatPaths) {
       try {
-        navigator.sendBeacon(API + 'https://aabay.vercel.app/api/fb/update', new Blob([JSON.stringify({ path: hp.parentPath, value: { 'presence/state': 'offline', 'presence/lastChangedAt': Date.now() } })], { type: 'application/json' }));
+        navigator.sendBeacon(API + '/api/fb/update', new Blob([JSON.stringify({ path: hp.parentPath, value: { 'presence/state': 'offline', 'presence/lastChangedAt': Date.now() } })], { type: 'application/json' }));
       } catch(e) {}
     }
   });
